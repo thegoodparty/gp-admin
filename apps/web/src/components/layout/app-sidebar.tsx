@@ -27,6 +27,7 @@ import {
 import { UserAvatar } from '@/components/user-avatar';
 import { navItems } from '@/config/nav';
 import { ChevronDown, LogOut, User } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -39,12 +40,11 @@ export default function AppSidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size='lg' asChild>
               <Link href='/dashboard'>
-                <div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground'>
-                  <span className='text-lg font-bold'>GP</span>
+                <div className='flex aspect-square size-8 items-center justify-center rounded-lg  text-sidebar-primary-foreground'>
+                  <Image src='https://assets.goodparty.org/logo.svg' alt='GP Admin' width={32} height={32} />
                 </div>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
                   <span className='truncate font-semibold'>GP Admin</span>
-                  <span className='truncate text-xs'>Enterprise</span>
                 </div>
               </Link>
             </SidebarMenuButton>
