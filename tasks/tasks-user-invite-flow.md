@@ -3,26 +3,32 @@
 ## Relevant Files
 
 ### Shared Library Files
+
 - `apps/web/src/shared/lib/roles.ts` - Role constants, types, and labels
 - `apps/web/src/shared/lib/permissions.ts` - Permission checking utility functions
 - `apps/web/src/shared/lib/validation.ts` - Email domain validation utilities
 
 ### Shared Hooks
+
 - `apps/web/src/shared/hooks/useCurrentUser.ts` - Hook to access current user and role from Clerk
 - `apps/web/src/shared/hooks/useRequireRole.ts` - Hook to check/require specific roles with redirect
 - `apps/web/src/shared/hooks/index.ts` - Barrel export for hooks
 
 ### Shared Components
+
 - `apps/web/src/shared/components/RequireRole.tsx` - Component wrapper for role-gated content
 - `apps/web/src/shared/components/index.ts` - Barrel export for components
 
 ### Layout Files
+
 - `apps/web/src/shared/layout/Sidebar.tsx` - Sidebar navigation (add Team nav item)
 
 ### Auth Pages
+
 - `apps/web/src/app/auth/sign-up/[[...sign-up]]/page.tsx` - Custom sign-up page (invitation only)
 
 ### Team Feature Files
+
 - `apps/web/src/app/dashboard/team/page.tsx` - Team management page
 - `apps/web/src/app/dashboard/team/actions.ts` - Server actions for Clerk operations
 - `apps/web/src/app/dashboard/team/components/TeamTable.tsx` - Data table for team members
@@ -32,11 +38,12 @@
 - `apps/web/src/app/dashboard/team/components/index.ts` - Barrel export for team components
 
 ### Test Files
+
 - `e2e/team-management.spec.ts` - E2E tests for team management flow
 
 ### Notes
 
-
+- make sure to follow our cursor rules!
 - Use `npx playwright test` to run E2E tests
 - All Clerk operations go through Server Actions - no custom API routes needed
 - Use components from `goodparty-styleguide` for UI consistency
@@ -46,23 +53,23 @@
 **IMPORTANT:** As you complete each task, you must check it off in this markdown file by changing `- [ ]` to `- [x]`. This helps track progress and ensures you don't skip any steps.
 
 Example:
+
 - `- [ ] 1.1 Read file` → `- [x] 1.1 Read file` (after completing)
 
 Update the file after completing each sub-task, not just after completing an entire parent task.
 
 ## Tasks
 
-
-- [ ] 1.0 Create shared library files for roles and permissions
-  - [ ] 1.1 Create `apps/web/src/shared/lib/` directory if it doesn't exist
-  - [ ] 1.2 Create `roles.ts` with `ROLES` constant object (`admin`, `sales`, `readOnly`)
-  - [ ] 1.3 Add `Role` type definition exported from roles
-  - [ ] 1.4 Add `ROLE_LABELS` record mapping role values to display labels
-  - [ ] 1.5 Add `ROLE_OPTIONS` array for dropdown select options
-  - [ ] 1.6 Create `permissions.ts` with `canManageTeam()` function (returns true if role is admin)
-  - [ ] 1.7 Add `canInviteUsers()` function to permissions
-  - [ ] 1.8 Add `canEditData()` function to permissions (admin or sales)
-  - [ ] 1.9 Export `PERMISSIONS` object with all permission functions
+- [x] 1.0 Create shared library files for roles and permissions
+  - [x] 1.1 Create `apps/web/src/shared/lib/` directory if it doesn't exist
+  - [x] 1.2 Create `roles.ts` with `ROLES` constant object (`admin`, `sales`, `readOnly`)
+  - [x] 1.3 Add `Role` type definition exported from roles
+  - [x] 1.4 Add `ROLE_LABELS` record mapping role values to display labels
+  - [x] 1.5 Add `ROLE_OPTIONS` array for dropdown select options
+  - [x] 1.6 Create `permissions.ts` with `canManageTeam()` function (returns true if role is admin)
+  - [x] 1.7 Add `canInviteUsers()` function to permissions
+  - [x] 1.8 Add `canEditData()` function to permissions (admin or sales)
+  - [x] 1.9 Export `PERMISSIONS` object with all permission functions
 
 - [ ] 2.0 Create email validation utilities
   - [ ] 2.1 Create `validation.ts` in shared/lib
