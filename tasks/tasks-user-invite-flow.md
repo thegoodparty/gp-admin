@@ -71,31 +71,31 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 1.8 Add `canEditData()` function to permissions (admin or sales)
   - [x] 1.9 Export `PERMISSIONS` object with all permission functions
 
-- [ ] 2.0 Create email validation utilities
-  - [ ] 2.1 Create `validation.ts` in shared/lib
-  - [ ] 2.2 Add `ALLOWED_EMAIL_DOMAIN` constant (`@goodparty.org`)
-  - [ ] 2.3 Implement `isValidEmailDomain()` function
-  - [ ] 2.4 Implement `validateInviteEmail()` function returning `{ valid: boolean, error?: string }`
-  - [ ] 2.5 Handle edge cases: empty string, invalid format, wrong domain
+- [x] 2.0 Create email validation utilities
+  - [x] 2.1 Create `validation.ts` in shared/lib
+  - [x] 2.2 Add `ALLOWED_EMAIL_DOMAIN` constant (`@goodparty.org`)
+  - [x] 2.3 Implement `isValidEmailDomain()` function
+  - [x] 2.4 Implement `validateInviteEmail()` function returning `{ valid: boolean, error?: string }`
+  - [x] 2.5 Handle edge cases: empty string, invalid format, wrong domain
 
-- [ ] 3.0 Create user hooks for accessing current user and role
-  - [ ] 3.1 Create `useCurrentUser.ts` hook in shared/hooks
-  - [ ] 3.2 Import and use `useUser` from `@clerk/nextjs`
-  - [ ] 3.3 Define `CurrentUser` interface with id, email, firstName, lastName, fullName, role, imageUrl, isLoaded, isSignedIn
-  - [ ] 3.4 Implement the hook to extract role from `user.publicMetadata.role`
-  - [ ] 3.5 Create `useRequireRole.ts` hook
-  - [ ] 3.6 Implement redirect logic when user lacks required role
-  - [ ] 3.7 Add `useRequireAdmin()` convenience function
-  - [ ] 3.8 Create `index.ts` barrel export for all hooks
+- [x] 3.0 Create user hooks for accessing current user and role
+  - [x] 3.1 Create `useCurrentUser.ts` hook in shared/hooks
+  - [x] 3.2 Import and use `useUser` from `@clerk/nextjs`
+  - [x] 3.3 Define `CurrentUser` interface with id, email, firstName, lastName, fullName, role, imageUrl, isLoaded, isSignedIn
+  - [x] 3.4 Implement the hook to extract role from `user.publicMetadata.role`
+  - [x] 3.5 Create `useRequireRole.ts` hook
+  - [x] 3.6 Implement redirect logic when user lacks required role
+  - [x] 3.7 Add `useRequireAdmin()` convenience function
+  - [x] 3.8 Create `index.ts` barrel export for all hooks
 
-- [ ] 4.0 Create RequireRole component for role-gated UI
-  - [ ] 4.1 Create `apps/web/src/shared/components/` directory
-  - [ ] 4.2 Create `RequireRole.tsx` as a client component (`'use client'`)
-  - [ ] 4.3 Accept props: `role` (single or array), `children`, `fallback` (optional)
-  - [ ] 4.4 Use `useCurrentUser` hook to check user's role
-  - [ ] 4.5 Render children if user has access, fallback otherwise
-  - [ ] 4.6 Handle loading state (return null while loading)
-  - [ ] 4.7 Create `index.ts` barrel export
+- [x] 4.0 Create RequireRole component for role-gated UI
+  - [x] 4.1 Create `apps/web/src/shared/components/` directory
+  - [x] 4.2 Create `RequireRole.tsx` as a client component (`'use client'`)
+  - [x] 4.3 Accept props: `role` (single or array), `children`, `fallback` (optional)
+  - [x] 4.4 Use `useCurrentUser` hook to check user's role
+  - [x] 4.5 Render children if user has access, fallback otherwise
+  - [x] 4.6 Handle loading state (return null while loading)
+  - [x] 4.7 Create `index.ts` barrel export
 
 - [ ] 5.0 Create custom sign-up page for invited users
   - [ ] 5.1 Create directory structure: `apps/web/src/app/auth/sign-up/[[...sign-up]]/`
