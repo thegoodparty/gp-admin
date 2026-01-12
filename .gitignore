@@ -5,9 +5,6 @@ node_modules
 
 # Testing
 coverage
-playwright-report/
-test-results/
-e2e/.auth/
 
 # Next.js
 .next/
@@ -18,7 +15,6 @@ dist/
 # Misc
 .DS_Store
 *.pem
-.vscode
 
 # Debug
 npm-debug.log*
@@ -39,3 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+.vscode
+
+# Playwright
+test-results
+playwright-report
