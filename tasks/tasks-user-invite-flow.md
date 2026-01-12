@@ -1,0 +1,221 @@
+# Tasks: User Invitation and Team Management System
+
+## Relevant Files
+
+### Shared Library Files
+- `apps/web/src/shared/lib/roles.ts` - Role constants, types, and labels
+- `apps/web/src/shared/lib/permissions.ts` - Permission checking utility functions
+- `apps/web/src/shared/lib/validation.ts` - Email domain validation utilities
+
+### Shared Hooks
+- `apps/web/src/shared/hooks/useCurrentUser.ts` - Hook to access current user and role from Clerk
+- `apps/web/src/shared/hooks/useRequireRole.ts` - Hook to check/require specific roles with redirect
+- `apps/web/src/shared/hooks/index.ts` - Barrel export for hooks
+
+### Shared Components
+- `apps/web/src/shared/components/RequireRole.tsx` - Component wrapper for role-gated content
+- `apps/web/src/shared/components/index.ts` - Barrel export for components
+
+### Layout Files
+- `apps/web/src/shared/layout/Sidebar.tsx` - Sidebar navigation (add Team nav item)
+
+### Auth Pages
+- `apps/web/src/app/auth/sign-up/[[...sign-up]]/page.tsx` - Custom sign-up page (invitation only)
+
+### Team Feature Files
+- `apps/web/src/app/dashboard/team/page.tsx` - Team management page
+- `apps/web/src/app/dashboard/team/actions.ts` - Server actions for Clerk operations
+- `apps/web/src/app/dashboard/team/components/TeamTable.tsx` - Data table for team members
+- `apps/web/src/app/dashboard/team/components/InviteDialog.tsx` - Invite user modal dialog
+- `apps/web/src/app/dashboard/team/components/RoleChangeDialog.tsx` - Role change confirmation dialog
+- `apps/web/src/app/dashboard/team/components/RemoveUserDialog.tsx` - Remove user confirmation dialog
+- `apps/web/src/app/dashboard/team/components/index.ts` - Barrel export for team components
+
+### Test Files
+- `e2e/team-management.spec.ts` - E2E tests for team management flow
+
+### Notes
+
+
+- Use `npx playwright test` to run E2E tests
+- All Clerk operations go through Server Actions - no custom API routes needed
+- Use components from `goodparty-styleguide` for UI consistency
+
+## Instructions for Completing Tasks
+
+**IMPORTANT:** As you complete each task, you must check it off in this markdown file by changing `- [ ]` to `- [x]`. This helps track progress and ensures you don't skip any steps.
+
+Example:
+- `- [ ] 1.1 Read file` → `- [x] 1.1 Read file` (after completing)
+
+Update the file after completing each sub-task, not just after completing an entire parent task.
+
+## Tasks
+
+
+- [ ] 1.0 Create shared library files for roles and permissions
+  - [ ] 1.1 Create `apps/web/src/shared/lib/` directory if it doesn't exist
+  - [ ] 1.2 Create `roles.ts` with `ROLES` constant object (`admin`, `sales`, `readOnly`)
+  - [ ] 1.3 Add `Role` type definition exported from roles
+  - [ ] 1.4 Add `ROLE_LABELS` record mapping role values to display labels
+  - [ ] 1.5 Add `ROLE_OPTIONS` array for dropdown select options
+  - [ ] 1.6 Create `permissions.ts` with `canManageTeam()` function (returns true if role is admin)
+  - [ ] 1.7 Add `canInviteUsers()` function to permissions
+  - [ ] 1.8 Add `canEditData()` function to permissions (admin or sales)
+  - [ ] 1.9 Export `PERMISSIONS` object with all permission functions
+
+- [ ] 2.0 Create email validation utilities
+  - [ ] 2.1 Create `validation.ts` in shared/lib
+  - [ ] 2.2 Add `ALLOWED_EMAIL_DOMAIN` constant (`@goodparty.org`)
+  - [ ] 2.3 Implement `isValidEmailDomain()` function
+  - [ ] 2.4 Implement `validateInviteEmail()` function returning `{ valid: boolean, error?: string }`
+  - [ ] 2.5 Handle edge cases: empty string, invalid format, wrong domain
+
+- [ ] 3.0 Create user hooks for accessing current user and role
+  - [ ] 3.1 Create `useCurrentUser.ts` hook in shared/hooks
+  - [ ] 3.2 Import and use `useUser` from `@clerk/nextjs`
+  - [ ] 3.3 Define `CurrentUser` interface with id, email, firstName, lastName, fullName, role, imageUrl, isLoaded, isSignedIn
+  - [ ] 3.4 Implement the hook to extract role from `user.publicMetadata.role`
+  - [ ] 3.5 Create `useRequireRole.ts` hook
+  - [ ] 3.6 Implement redirect logic when user lacks required role
+  - [ ] 3.7 Add `useRequireAdmin()` convenience function
+  - [ ] 3.8 Create `index.ts` barrel export for all hooks
+
+- [ ] 4.0 Create RequireRole component for role-gated UI
+  - [ ] 4.1 Create `apps/web/src/shared/components/` directory
+  - [ ] 4.2 Create `RequireRole.tsx` as a client component (`'use client'`)
+  - [ ] 4.3 Accept props: `role` (single or array), `children`, `fallback` (optional)
+  - [ ] 4.4 Use `useCurrentUser` hook to check user's role
+  - [ ] 4.5 Render children if user has access, fallback otherwise
+  - [ ] 4.6 Handle loading state (return null while loading)
+  - [ ] 4.7 Create `index.ts` barrel export
+
+- [ ] 5.0 Create custom sign-up page for invited users
+  - [ ] 5.1 Create directory structure: `apps/web/src/app/auth/sign-up/[[...sign-up]]/`
+  - [ ] 5.2 Create `page.tsx` with Clerk's `<SignUp />` component
+  - [ ] 5.3 Add metadata (title, description)
+  - [ ] 5.4 Style the page consistently with sign-in page
+  - [ ] 5.5 Configure Clerk Dashboard: Enable "Restricted" sign-up mode (invitation-only)
+  - [ ] 5.6 Test that direct access to sign-up without invitation shows appropriate error
+
+- [ ] 6.0 Add Team navigation item to sidebar (admin only)
+  - [ ] 6.1 Open `apps/web/src/shared/layout/Sidebar.tsx`
+  - [ ] 6.2 Import `RequireRole` component and `ROLES` constant
+  - [ ] 6.3 Add Team nav item object with title "Team", href "/dashboard/team", icon (HiUserGroup or similar)
+  - [ ] 6.4 Wrap Team nav item with `RequireRole` component requiring admin role
+  - [ ] 6.5 Test that Team item only appears for admin users
+
+- [ ] 7.0 Create server actions for Clerk operations
+  - [ ] 7.1 Create `apps/web/src/app/dashboard/team/actions.ts`
+  - [ ] 7.2 Add `'use server'` directive at top of file
+  - [ ] 7.3 Import `auth`, `clerkClient` from `@clerk/nextjs/server`
+  - [ ] 7.4 Import role types and validation utilities
+  - [ ] 7.5 Implement `requireAdmin()` helper function that verifies admin role
+  - [ ] 7.6 Implement `inviteUser(email: string, role: Role)` server action
+  - [ ] 7.7 Add email validation in `inviteUser` before calling Clerk
+  - [ ] 7.8 Set `publicMetadata` with role, invitedBy, invitedAt in invitation
+  - [ ] 7.9 Set `redirectUrl` to sign-up page URL
+  - [ ] 7.10 Implement `listUsers()` server action using `client.users.getUserList()`
+  - [ ] 7.11 Implement `listInvitations()` server action for pending invitations
+  - [ ] 7.12 Implement `updateUserRole(userId: string, newRole: Role)` server action
+  - [ ] 7.13 Implement `removeUser(userId: string)` server action
+  - [ ] 7.14 Implement `revokeInvitation(invitationId: string)` server action
+  - [ ] 7.15 Add proper error handling and throw descriptive errors
+
+- [ ] 8.0 Create Team management page layout
+  - [ ] 8.1 Create `apps/web/src/app/dashboard/team/` directory
+  - [ ] 8.2 Create `page.tsx` as a server component
+  - [ ] 8.3 Fetch initial data using server actions (listUsers, listInvitations)
+  - [ ] 8.4 Add page title "Team Management"
+  - [ ] 8.5 Add "Invite User" button in header area
+  - [ ] 8.6 Import and render TeamTable component with fetched data
+  - [ ] 8.7 Add admin-only access check using `useRequireAdmin` or server-side check
+
+- [ ] 9.0 Create TeamTable component with DataTable from styleguide
+  - [ ] 9.1 Create `apps/web/src/app/dashboard/team/components/` directory
+  - [ ] 9.2 Create `TeamTable.tsx` component
+  - [ ] 9.3 Import `DataTable`, `DataTableColumnHeader`, `Badge`, `Avatar`, `DropdownMenu` from goodparty-styleguide
+  - [ ] 9.4 Define column definitions: Name (with Avatar), Email, Role, Status, Last Login, Invited By, Invite Date, Actions
+  - [ ] 9.5 Implement Status column with Badge component (Active/Pending variants)
+  - [ ] 9.6 Implement Role column showing role label
+  - [ ] 9.7 Implement Actions column with DropdownMenu (Change Role, Remove for users; Resend, Revoke for pending)
+  - [ ] 9.8 Add search functionality for filtering by name/email
+  - [ ] 9.9 Add filter dropdown for role
+  - [ ] 9.10 Add filter dropdown for status (Active/Pending)
+  - [ ] 9.11 Create `index.ts` barrel export for team components
+
+- [ ] 10.0 Create InviteDialog component
+  - [ ] 10.1 Create `InviteDialog.tsx` component
+  - [ ] 10.2 Import `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter`, `Input`, `Select`, `Button` from styleguide
+  - [ ] 10.3 Create controlled form state for email and role
+  - [ ] 10.4 Add email input field with placeholder showing domain requirement
+  - [ ] 10.5 Add role select dropdown populated from `ROLE_OPTIONS`
+  - [ ] 10.6 Implement client-side validation using `validateInviteEmail()`
+  - [ ] 10.7 Display validation error message below email field
+  - [ ] 10.8 Add Cancel button (secondary variant)
+  - [ ] 10.9 Add Send Invitation button (default variant)
+  - [ ] 10.10 Wire up form submission to `inviteUser` server action
+  - [ ] 10.11 Add loading state during submission
+  - [ ] 10.12 Handle success: close dialog, show toast, refresh data
+  - [ ] 10.13 Handle error: show error toast with message
+
+- [ ] 11.0 Create RoleChangeDialog component
+  - [ ] 11.1 Create `RoleChangeDialog.tsx` component
+  - [ ] 11.2 Accept props: user info, current role, new role, onConfirm, onCancel
+  - [ ] 11.3 Display confirmation message: "Change [Name]'s role from [Current] to [New]?"
+  - [ ] 11.4 Add Cancel button (secondary variant)
+  - [ ] 11.5 Add Confirm button (default variant)
+  - [ ] 11.6 Wire up to `updateUserRole` server action
+  - [ ] 11.7 Add loading state during update
+  - [ ] 11.8 Handle success and error with appropriate toasts
+
+- [ ] 12.0 Create RemoveUserDialog component
+  - [ ] 12.1 Create `RemoveUserDialog.tsx` component
+  - [ ] 12.2 Accept props: user info, onConfirm, onCancel
+  - [ ] 12.3 Display warning message: "Are you sure you want to remove [Name]? This action cannot be undone."
+  - [ ] 12.4 Add Cancel button (secondary variant)
+  - [ ] 12.5 Add Remove button (destructive variant)
+  - [ ] 12.6 Wire up to `removeUser` server action
+  - [ ] 12.7 Add loading state during removal
+  - [ ] 12.8 Handle success and error with appropriate toasts
+
+- [ ] 13.0 Implement pending invitation actions
+  - [ ] 13.1 Add "Resend Invitation" option to pending invitation row actions
+  - [ ] 13.2 Implement resend by calling `inviteUser` with same email/role (Clerk creates new invitation)
+  - [ ] 13.3 Add "Revoke Invitation" option to pending invitation row actions
+  - [ ] 13.4 Create confirmation dialog for revoking invitation
+  - [ ] 13.5 Wire up to `revokeInvitation` server action
+  - [ ] 13.6 Refresh table data after resend/revoke actions
+
+- [ ] 14.0 Configure Clerk email templates
+  - [ ] 14.1 Access Clerk Dashboard → Customization → Emails
+  - [ ] 14.2 Customize invitation email template with GoodParty branding
+  - [ ] 14.3 Verify role change notification email is enabled (if available in Clerk)
+  - [ ] 14.4 Test invitation email flow end-to-end
+
+- [ ] 15.0 Manual Clerk Dashboard setup (one-time)
+  - [ ] 15.1 Create first admin user manually in Clerk Dashboard
+  - [ ] 15.2 Set `publicMetadata.role = "admin"` for first admin user
+  - [ ] 15.3 Enable "Restricted" sign-up mode in Clerk Dashboard (Settings → Restrictions)
+  - [ ] 15.4 Document setup steps in README or internal docs
+
+- [ ] 16.0 Write E2E tests for team management
+  - [ ] 16.1 Create `e2e/team-management.spec.ts`
+  - [ ] 16.2 Write test: Admin can see Team in sidebar
+  - [ ] 16.3 Write test: Non-admin cannot see Team in sidebar
+  - [ ] 16.4 Write test: Admin can open invite dialog
+  - [ ] 16.5 Write test: Invalid email domain shows error
+  - [ ] 16.6 Write test: Valid invitation flow (mock or test Clerk)
+  - [ ] 16.7 Write test: Role change confirmation dialog appears
+  - [ ] 16.8 Write test: Remove user confirmation dialog appears
+
+- [ ] 17.0 Final testing and polish
+  - [ ] 17.1 Test complete invitation flow with real @goodparty.org email
+  - [ ] 17.2 Test role change flow
+  - [ ] 17.3 Test user removal flow
+  - [ ] 17.4 Test pending invitation resend/revoke
+  - [ ] 17.5 Verify all loading states work correctly
+  - [ ] 17.6 Verify all error states display properly
+  - [ ] 17.7 Test responsive design on mobile viewports
+  - [ ] 17.9 Run all E2E tests and fix any failures
+  - [ ] 17.10 Code review and cleanup
