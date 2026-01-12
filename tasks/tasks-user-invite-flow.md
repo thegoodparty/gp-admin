@@ -97,46 +97,46 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 4.6 Handle loading state (return null while loading)
   - [x] 4.7 Create `index.ts` barrel export
 
-- [ ] 5.0 Create custom sign-up page for invited users
-  - [ ] 5.1 Create directory structure: `apps/web/src/app/auth/sign-up/[[...sign-up]]/`
-  - [ ] 5.2 Create `page.tsx` with Clerk's `<SignUp />` component
-  - [ ] 5.3 Add metadata (title, description)
-  - [ ] 5.4 Style the page consistently with sign-in page
-  - [ ] 5.5 Configure Clerk Dashboard: Enable "Restricted" sign-up mode (invitation-only)
-  - [ ] 5.6 Test that direct access to sign-up without invitation shows appropriate error
+- [x] 5.0 Create custom sign-up page for invited users
+  - [x] 5.1 Create directory structure: `apps/web/src/app/auth/sign-up/[[...sign-up]]/`
+  - [x] 5.2 Create `page.tsx` with Clerk's `<SignUp />` component
+  - [x] 5.3 Add metadata (title, description)
+  - [x] 5.4 Style the page consistently with sign-in page
+  - [x] 5.5 **MANUAL:** Configure Clerk Dashboard: Enable "Restricted" sign-up mode (invitation-only)
+  - [x] 5.6 **MANUAL:** Test that direct access to sign-up without invitation shows appropriate error
 
-- [ ] 6.0 Add Team navigation item to sidebar (admin only)
-  - [ ] 6.1 Open `apps/web/src/shared/layout/Sidebar.tsx`
-  - [ ] 6.2 Import `RequireRole` component and `ROLES` constant
-  - [ ] 6.3 Add Team nav item object with title "Team", href "/dashboard/team", icon (HiUserGroup or similar)
-  - [ ] 6.4 Wrap Team nav item with `RequireRole` component requiring admin role
-  - [ ] 6.5 Test that Team item only appears for admin users
+- [x] 6.0 Add Team navigation item to sidebar (admin only)
+  - [x] 6.1 Open `apps/web/src/shared/layout/Sidebar.tsx`
+  - [x] 6.2 Import `RequireRole` component and `ROLES` constant
+  - [x] 6.3 Add Team nav item object with title "Team", href "/dashboard/team", icon (HiUserGroup or similar)
+  - [x] 6.4 Wrap Team nav item with `RequireRole` component requiring admin role
+  - [ ] 6.5 **MANUAL:** Test that Team item only appears for admin users
 
-- [ ] 7.0 Create server actions for Clerk operations
-  - [ ] 7.1 Create `apps/web/src/app/dashboard/team/actions.ts`
-  - [ ] 7.2 Add `'use server'` directive at top of file
-  - [ ] 7.3 Import `auth`, `clerkClient` from `@clerk/nextjs/server`
-  - [ ] 7.4 Import role types and validation utilities
-  - [ ] 7.5 Implement `requireAdmin()` helper function that verifies admin role
-  - [ ] 7.6 Implement `inviteUser(email: string, role: Role)` server action
-  - [ ] 7.7 Add email validation in `inviteUser` before calling Clerk
-  - [ ] 7.8 Set `publicMetadata` with role, invitedBy, invitedAt in invitation
-  - [ ] 7.9 Set `redirectUrl` to sign-up page URL
-  - [ ] 7.10 Implement `listUsers()` server action using `client.users.getUserList()`
-  - [ ] 7.11 Implement `listInvitations()` server action for pending invitations
-  - [ ] 7.12 Implement `updateUserRole(userId: string, newRole: Role)` server action
-  - [ ] 7.13 Implement `removeUser(userId: string)` server action
-  - [ ] 7.14 Implement `revokeInvitation(invitationId: string)` server action
-  - [ ] 7.15 Add proper error handling and throw descriptive errors
+- [x] 7.0 Create server actions for Clerk operations
+  - [x] 7.1 Create `apps/web/src/app/dashboard/team/actions.ts`
+  - [x] 7.2 Add `'use server'` directive at top of file
+  - [x] 7.3 Import `auth`, `clerkClient` from `@clerk/nextjs/server`
+  - [x] 7.4 Import role types and validation utilities
+  - [x] 7.5 Implement `requireAdmin()` helper function that verifies admin role
+  - [x] 7.6 Implement `inviteUser(email: string, role: Role)` server action
+  - [x] 7.7 Add email validation in `inviteUser` before calling Clerk
+  - [x] 7.8 Set `publicMetadata` with role, invitedBy, invitedAt in invitation
+  - [x] 7.9 Set `redirectUrl` to sign-up page URL
+  - [x] 7.10 Implement `listUsers()` server action using `client.users.getUserList()`
+  - [x] 7.11 Implement `listInvitations()` server action for pending invitations
+  - [x] 7.12 Implement `updateUserRole(userId: string, newRole: Role)` server action
+  - [x] 7.13 Implement `removeUser(userId: string)` server action
+  - [x] 7.14 Implement `revokeInvitation(invitationId: string)` server action
+  - [x] 7.15 Add proper error handling and throw descriptive errors
 
-- [ ] 8.0 Create Team management page layout
-  - [ ] 8.1 Create `apps/web/src/app/dashboard/team/` directory
-  - [ ] 8.2 Create `page.tsx` as a server component
-  - [ ] 8.3 Fetch initial data using server actions (listUsers, listInvitations)
-  - [ ] 8.4 Add page title "Team Management"
-  - [ ] 8.5 Add "Invite User" button in header area
-  - [ ] 8.6 Import and render TeamTable component with fetched data
-  - [ ] 8.7 Add admin-only access check using `useRequireAdmin` or server-side check
+- [x] 8.0 Create Team management page layout
+  - [x] 8.1 Create `apps/web/src/app/dashboard/team/` directory
+  - [x] 8.2 Create `page.tsx` as a server component
+  - [x] 8.3 Fetch initial data using server actions (listUsers, listInvitations)
+  - [x] 8.4 Add page title "Team Management"
+  - [x] 8.5 Add "Invite User" button in header area
+  - [x] 8.6 Import and render TeamTable component with fetched data
+  - [x] 8.7 Add admin-only access check using `useRequireAdmin` or server-side check
 
 - [ ] 9.0 Create TeamTable component with DataTable from styleguide
   - [ ] 9.1 Create `apps/web/src/app/dashboard/team/components/` directory

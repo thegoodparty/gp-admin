@@ -3,7 +3,10 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { createContext, useContext, useState, ReactNode } from 'react'
-import { HiUsers, HiStar, HiMenu } from 'react-icons/hi'
+import { HiUsers, HiStar, HiMenu, HiUserGroup } from 'react-icons/hi'
+import { RequireRole } from '../components/RequireRole'
+import { ROLES } from '../lib/roles'
+
 const navItems = [
   {
     title: 'Users',
@@ -14,6 +17,14 @@ const navItems = [
     title: 'Campaigns',
     href: '/dashboard/campaigns',
     icon: HiStar,
+  },
+]
+
+const adminNavItems = [
+  {
+    title: 'Team',
+    href: '/dashboard/team',
+    icon: HiUserGroup,
   },
 ]
 
@@ -57,6 +68,47 @@ export function SidebarTrigger() {
   )
 }
 
+interface NavItemProps {
+  item: {
+    title: string
+    href: string
+    icon: React.ComponentType<{ className?: string }>
+  }
+  isActive: boolean
+  isOpen: boolean
+}
+
+function NavItem({ item, isActive, isOpen }: NavItemProps) {
+  return (
+    <li>
+      <Link
+        href={item.href}
+        className={`
+          flex items-center gap-3 px-3 py-2 rounded-md
+          transition-colors duration-200
+          ${
+            isActive
+              ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
+              : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+          }
+          ${isOpen ? '' : 'justify-center'}
+        `}
+        title={!isOpen ? item.title : undefined}
+      >
+        <item.icon className="size-5 shrink-0" />
+        <span
+          className={`
+            transition-all duration-300 overflow-hidden whitespace-nowrap
+            ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0'}
+          `}
+        >
+          {item.title}
+        </span>
+      </Link>
+    </li>
+  )
+}
+
 export default function Sidebar() {
   const pathname = usePathname()
   const { isOpen } = useSidebar()
@@ -75,37 +127,24 @@ export default function Sidebar() {
     >
       <nav className="flex-1 p-2">
         <ul className="space-y-1">
-          {navItems.map((item) => {
-            const isActive = pathname.startsWith(item.href)
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`
-                    flex items-center gap-3 px-3 py-2 rounded-md
-                    transition-colors duration-200
-                    ${
-                      isActive
-                        ? 'bg-sidebar-accent text-sidebar-accent-foreground font-medium'
-                        : 'text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
-                    }
-                    ${isOpen ? '' : 'justify-center'}
-                  `}
-                  title={!isOpen ? item.title : undefined}
-                >
-                  <item.icon className="size-5 shrink-0" />
-                  <span
-                    className={`
-                      transition-all duration-300 overflow-hidden whitespace-nowrap
-                      ${isOpen ? 'opacity-100 w-auto' : 'opacity-0 w-0'}
-                    `}
-                  >
-                    {item.title}
-                  </span>
-                </Link>
-              </li>
-            )
-          })}
+          {navItems.map((item) => (
+            <NavItem
+              key={item.href}
+              item={item}
+              isActive={pathname.startsWith(item.href)}
+              isOpen={isOpen}
+            />
+          ))}
+          <RequireRole role={ROLES.ADMIN}>
+            {adminNavItems.map((item) => (
+              <NavItem
+                key={item.href}
+                item={item}
+                isActive={pathname.startsWith(item.href)}
+                isOpen={isOpen}
+              />
+            ))}
+          </RequireRole>
         </ul>
       </nav>
     </aside>
