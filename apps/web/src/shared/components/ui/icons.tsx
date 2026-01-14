@@ -1,0 +1,22 @@
+// Re-export icons from lucide-react
+export {
+  Plus as PlusIcon,
+  MoreHorizontal as MoreHorizontalIcon,
+  ChevronDown as ChevronDownIcon,
+  ChevronUp as ChevronUpIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Check as CheckIcon,
+  X as XIcon,
+  Search as SearchIcon,
+  ArrowUpDown as ArrowUpDownIcon,
+  ArrowUp as ArrowUpIcon,
+  ArrowDown as ArrowDownIcon,
+  Loader2 as LoaderIcon,
+  User as UserIcon,
+  Settings as SettingsIcon,
+  LogOut as LogOutIcon,
+  Menu as MenuIcon,
+  Home as HomeIcon,
+  Users as UsersIcon,
+} from 'lucide-react'

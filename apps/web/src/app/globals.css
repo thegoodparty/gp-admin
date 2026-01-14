@@ -1,7 +1,13 @@
-/* Import compiled styleguide CSS (includes all component styles) */
-@import 'goodparty-styleguide/dist/index.css';
-
-/* Tailwind directives for local utility classes */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Spinner animation for loading states */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

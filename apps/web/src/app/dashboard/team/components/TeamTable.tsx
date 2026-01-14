@@ -19,7 +19,7 @@ import {
   SelectContent,
   SelectItem,
   MoreHorizontalIcon,
-} from 'goodparty-styleguide'
+} from '@/shared/components/ui'
 import { TeamUser, TeamInvitation } from '../types'
 import { ROLE_LABELS, ROLE_OPTIONS, Role } from '@/shared/lib/roles'
 import { RoleChangeDialog } from './RoleChangeDialog'
@@ -163,23 +163,23 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
           .slice(0, 2)
 
         return (
-          <div className="flex items-center gap-3 p-2">
-            <div className="size-16 relative rounded-full">
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px' }}>
+            <div style={{ width: '32px', height: '32px', position: 'relative', borderRadius: '50%' }}>
               <Avatar size="xSmall">
                 {member.imageUrl ? (
                   <Avatar.Image
                     src={member.imageUrl}
                     alt={member.name}
-                    className="object-cover"
+                    style={{ objectFit: 'cover' }}
                   />
                 ) : (
                   <Avatar.Fallback>{initials || '?'}</Avatar.Fallback>
                 )}
               </Avatar>
             </div>
-            <div className="flex flex-col">
-              <span className="font-medium">{member.name}</span>
-              <span className="text-sm text-muted-foreground">
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontWeight: 500 }}>{member.name}</span>
+              <span style={{ fontSize: '14px', color: '#6b7280' }}>
                 {member.email}
               </span>
             </div>
@@ -206,7 +206,13 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
         const status = row.original.status
         return (
           <div
-            className={`py-1 px-4 inline-block rounded-lg text-white ${status === 'active' ? 'bg-green-500 ' : 'bg-gray-500 text-secondary-foreground'}`}
+            style={{
+              padding: '4px 16px',
+              display: 'inline-block',
+              borderRadius: '8px',
+              color: 'white',
+              backgroundColor: status === 'active' ? '#22c55e' : '#6b7280',
+            }}
           >
             {status === 'active' ? 'Active' : 'Pending'}
           </div>
@@ -238,16 +244,15 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
             <DropdownMenuTrigger asChild>
               <IconButton
                 variant="ghost"
-                size="small"
                 aria-label="Open actions menu"
               >
-                <MoreHorizontalIcon className="size-4" />
+                <MoreHorizontalIcon size={16} />
               </IconButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="p-1 bg-white">
+            <DropdownMenuContent align="end" style={{ padding: '4px', backgroundColor: 'white' }}>
               {isUser ? (
                 <>
-                  <DropdownMenuLabel className="p-1">
+                  <DropdownMenuLabel style={{ padding: '4px' }}>
                     Change Role
                   </DropdownMenuLabel>
                   {ROLE_OPTIONS.map((option) => (
@@ -255,7 +260,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                       key={option.value}
                       disabled={member.role === option.value}
                       onClick={() => handleChangeRole(member, option.value)}
-                      className="p-1 focus:outline-none"
+                      style={{ padding: '4px' }}
                     >
                       {option.label}
                       {member.role === option.value && ' (current)'}
@@ -265,7 +270,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => handleRemove(member)}
-                    className="p-1 focus:outline-none"
+                    style={{ padding: '4px' }}
                   >
                     Remove User
                   </DropdownMenuItem>
@@ -291,38 +296,38 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   ]
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4 p-1">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '4px' }}>
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger style={{ width: '150px' }}>
             <SelectValue placeholder="Status" />
           </SelectTrigger>
-          <SelectContent className="p-1">
-            <SelectItem value="all" className="p-1 focus:outline-none">
+          <SelectContent style={{ padding: '4px' }}>
+            <SelectItem value="all" style={{ padding: '4px' }}>
               All Status
             </SelectItem>
-            <SelectItem value="active" className="p-1 focus:outline-none">
+            <SelectItem value="active" style={{ padding: '4px' }}>
               Active
             </SelectItem>
-            <SelectItem value="pending" className="p-1 focus:outline-none">
+            <SelectItem value="pending" style={{ padding: '4px' }}>
               Pending
             </SelectItem>
           </SelectContent>
         </Select>
 
         <Select value={roleFilter} onValueChange={setRoleFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger style={{ width: '150px' }}>
             <SelectValue placeholder="Role" />
           </SelectTrigger>
-          <SelectContent className="p-1">
-            <SelectItem value="all" className="p-1 focus:outline-none">
+          <SelectContent style={{ padding: '4px' }}>
+            <SelectItem value="all" style={{ padding: '4px' }}>
               All Roles
             </SelectItem>
             {ROLE_OPTIONS.map((option) => (
               <SelectItem
                 key={option.value}
                 value={option.value}
-                className="p-1 focus:outline-none"
+                style={{ padding: '4px' }}
               >
                 {option.label}
               </SelectItem>
@@ -331,7 +336,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
         </Select>
       </div>
 
-      <div className="[&>div>div:first-child]:pb-4 [&>div>div:nth-child(2)]:mb-4">
+      <div>
         <DataTable
           columns={columns}
           data={data}

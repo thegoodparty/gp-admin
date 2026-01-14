@@ -151,20 +151,20 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 9.10 Add filter dropdown for status (Active/Pending)
   - [x] 9.11 Create `index.ts` barrel export for team components
 
-- [ ] 10.0 Create InviteDialog component
-  - [ ] 10.1 Create `InviteDialog.tsx` component
-  - [ ] 10.2 Import `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter`, `Input`, `Select`, `Button` from styleguide
-  - [ ] 10.3 Create controlled form state for email and role
-  - [ ] 10.4 Add email input field with placeholder showing domain requirement
-  - [ ] 10.5 Add role select dropdown populated from `ROLE_OPTIONS`
-  - [ ] 10.6 Implement client-side validation using `validateInviteEmail()`
-  - [ ] 10.7 Display validation error message below email field
-  - [ ] 10.8 Add Cancel button (secondary variant)
-  - [ ] 10.9 Add Send Invitation button (default variant)
-  - [ ] 10.10 Wire up form submission to `inviteUser` server action
-  - [ ] 10.11 Add loading state during submission
-  - [ ] 10.12 Handle success: close dialog, show toast, refresh data
-  - [ ] 10.13 Handle error: show error toast with message
+- [x] 10.0 Create InviteDialog component
+  - [x] 10.1 Create `InviteDialog.tsx` component
+  - [x] 10.2 Import `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter`, `Input`, `Select`, `Button` from styleguide
+  - [x] 10.3 Create controlled form state for email and role
+  - [x] 10.4 Add email input field with placeholder showing domain requirement
+  - [x] 10.5 Add role select dropdown populated from `ROLE_OPTIONS`
+  - [x] 10.6 Implement client-side validation using `validateInviteEmail()`
+  - [x] 10.7 Display validation error message below email field
+  - [x] 10.8 Add Cancel button (secondary variant)
+  - [x] 10.9 Add Send Invitation button (default variant)
+  - [x] 10.10 Wire up form submission to `inviteUser` server action
+  - [x] 10.11 Add loading state during submission
+  - [x] 10.12 Handle success: close dialog, show toast, refresh data
+  - [x] 10.13 Handle error: show error toast with message
 
 - [x] 11.0 Create RoleChangeDialog component
   - [x] 11.1 Create `RoleChangeDialog.tsx` component

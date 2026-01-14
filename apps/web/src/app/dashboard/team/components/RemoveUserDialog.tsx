@@ -9,7 +9,7 @@ import {
   DialogDescription,
   DialogFooter,
   Button,
-} from 'goodparty-styleguide'
+} from '@/shared/components/ui'
 import { removeUser } from '../actions'
 
 interface RemoveUserDialogProps {
@@ -58,7 +58,15 @@ export function RemoveUserDialog({
         </DialogHeader>
 
         {error && (
-          <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+          <div
+            style={{
+              padding: '12px',
+              fontSize: '14px',
+              color: '#ef4444',
+              backgroundColor: '#fef2f2',
+              borderRadius: '6px',
+            }}
+          >
             {error}
           </div>
         )}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button, PlusIcon } from 'goodparty-styleguide'
+import { Button, PlusIcon } from '@/shared/components/ui'
 import { useRequireAdmin } from '@/shared/hooks'
 import { TeamUser, TeamInvitation } from '../types'
 import { TeamTable } from './TeamTable'
@@ -43,8 +43,15 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-muted-foreground">Loading...</div>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '256px',
+        }}
+      >
+        <div style={{ color: '#6b7280' }}>Loading...</div>
       </div>
     )
   }
@@ -54,17 +61,39 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Team Management</h1>
-          <p className="text-muted-foreground">
+          <h1
+            style={{
+              fontSize: '24px',
+              fontWeight: 'bold',
+              letterSpacing: '-0.025em',
+              margin: 0,
+            }}
+          >
+            Team Management
+          </h1>
+          <p style={{ color: '#6b7280', margin: '4px 0 0 0' }}>
             Manage team members and send invitations
           </p>
         </div>
         <Button onClick={handleOpenInviteDialog}>
-          <div className="flex items-center gap-2 p-2 pr-4">
-            <PlusIcon className="size-4" />
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 16px 8px 8px',
+            }}
+          >
+            <PlusIcon size={16} />
             Invite User
           </div>
         </Button>

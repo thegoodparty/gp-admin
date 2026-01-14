@@ -9,7 +9,7 @@ import {
   DialogDescription,
   DialogFooter,
   Button,
-} from 'goodparty-styleguide'
+} from '@/shared/components/ui'
 import { Role, ROLE_LABELS } from '@/shared/lib/roles'
 import { updateUserRole } from '../actions'
 
@@ -65,7 +65,15 @@ export function RoleChangeDialog({
         </DialogHeader>
 
         {error && (
-          <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">
+          <div
+            style={{
+              padding: '12px',
+              fontSize: '14px',
+              color: '#ef4444',
+              backgroundColor: '#fef2f2',
+              borderRadius: '6px',
+            }}
+          >
             {error}
           </div>
         )}

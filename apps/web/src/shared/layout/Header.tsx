@@ -7,7 +7,6 @@ import {
   UserButton,
   useUser,
 } from '@clerk/nextjs'
-import { DarkLightToggle } from './DarkLightToggle'
 import Image from 'next/image'
 import { SidebarTrigger } from './Sidebar'
 
@@ -15,7 +14,7 @@ export function Header() {
   const user = useUser()
 
   return (
-    <header className="flex justify-between items-center p-4 gap-4 h-16 border-b border-gray-200 dark:border-gray-800">
+    <header className="flex justify-between items-center p-4 gap-4 h-16 border-b border-gray-200">
       <div className="flex items-center gap-4">
         <Image
           src="https://s3.us-west-2.amazonaws.com/admin-assets.goodparty.org/logo.svg"
@@ -30,7 +29,6 @@ export function Header() {
         )}
       </div>
       <div className="flex items-center gap-4">
-        <DarkLightToggle />
         <SignedOut>
           <SignInButton />
         </SignedOut>
