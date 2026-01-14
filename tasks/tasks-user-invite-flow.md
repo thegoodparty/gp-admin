@@ -138,18 +138,18 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 8.6 Import and render TeamTable component with fetched data
   - [x] 8.7 Add admin-only access check using `useRequireAdmin` or server-side check
 
-- [ ] 9.0 Create TeamTable component with DataTable from styleguide
-  - [ ] 9.1 Create `apps/web/src/app/dashboard/team/components/` directory
-  - [ ] 9.2 Create `TeamTable.tsx` component
-  - [ ] 9.3 Import `DataTable`, `DataTableColumnHeader`, `Badge`, `Avatar`, `DropdownMenu` from goodparty-styleguide
-  - [ ] 9.4 Define column definitions: Name (with Avatar), Email, Role, Status, Last Login, Invited By, Invite Date, Actions
-  - [ ] 9.5 Implement Status column with Badge component (Active/Pending variants)
-  - [ ] 9.6 Implement Role column showing role label
-  - [ ] 9.7 Implement Actions column with DropdownMenu (Change Role, Remove for users; Resend, Revoke for pending)
-  - [ ] 9.8 Add search functionality for filtering by name/email
-  - [ ] 9.9 Add filter dropdown for role
-  - [ ] 9.10 Add filter dropdown for status (Active/Pending)
-  - [ ] 9.11 Create `index.ts` barrel export for team components
+- [x] 9.0 Create TeamTable component with DataTable from styleguide
+  - [x] 9.1 Create `apps/web/src/app/dashboard/team/components/` directory
+  - [x] 9.2 Create `TeamTable.tsx` component
+  - [x] 9.3 Import `DataTable`, `DataTableColumnHeader`, `Badge`, `Avatar`, `DropdownMenu` from goodparty-styleguide
+  - [x] 9.4 Define column definitions: Name (with Avatar), Email, Role, Status, Last Login, Invited By, Invite Date, Actions
+  - [x] 9.5 Implement Status column with Badge component (Active/Pending variants)
+  - [x] 9.6 Implement Role column showing role label
+  - [x] 9.7 Implement Actions column with DropdownMenu (Change Role, Remove for users; Resend, Revoke for pending)
+  - [x] 9.8 Add search functionality for filtering by name/email
+  - [x] 9.9 Add filter dropdown for role
+  - [x] 9.10 Add filter dropdown for status (Active/Pending)
+  - [x] 9.11 Create `index.ts` barrel export for team components
 
 - [ ] 10.0 Create InviteDialog component
   - [ ] 10.1 Create `InviteDialog.tsx` component
@@ -166,25 +166,25 @@ Update the file after completing each sub-task, not just after completing an ent
   - [ ] 10.12 Handle success: close dialog, show toast, refresh data
   - [ ] 10.13 Handle error: show error toast with message
 
-- [ ] 11.0 Create RoleChangeDialog component
-  - [ ] 11.1 Create `RoleChangeDialog.tsx` component
-  - [ ] 11.2 Accept props: user info, current role, new role, onConfirm, onCancel
-  - [ ] 11.3 Display confirmation message: "Change [Name]'s role from [Current] to [New]?"
-  - [ ] 11.4 Add Cancel button (secondary variant)
-  - [ ] 11.5 Add Confirm button (default variant)
-  - [ ] 11.6 Wire up to `updateUserRole` server action
-  - [ ] 11.7 Add loading state during update
-  - [ ] 11.8 Handle success and error with appropriate toasts
+- [x] 11.0 Create RoleChangeDialog component
+  - [x] 11.1 Create `RoleChangeDialog.tsx` component
+  - [x] 11.2 Accept props: user info, current role, new role, onConfirm, onCancel
+  - [x] 11.3 Display confirmation message: "Change [Name]'s role from [Current] to [New]?"
+  - [x] 11.4 Add Cancel button (secondary variant)
+  - [x] 11.5 Add Confirm button (default variant)
+  - [x] 11.6 Wire up to `updateUserRole` server action
+  - [x] 11.7 Add loading state during update
+  - [x] 11.8 Handle success and error with appropriate toasts
 
-- [ ] 12.0 Create RemoveUserDialog component
-  - [ ] 12.1 Create `RemoveUserDialog.tsx` component
-  - [ ] 12.2 Accept props: user info, onConfirm, onCancel
-  - [ ] 12.3 Display warning message: "Are you sure you want to remove [Name]? This action cannot be undone."
-  - [ ] 12.4 Add Cancel button (secondary variant)
-  - [ ] 12.5 Add Remove button (destructive variant)
-  - [ ] 12.6 Wire up to `removeUser` server action
-  - [ ] 12.7 Add loading state during removal
-  - [ ] 12.8 Handle success and error with appropriate toasts
+- [x] 12.0 Create RemoveUserDialog component
+  - [x] 12.1 Create `RemoveUserDialog.tsx` component
+  - [x] 12.2 Accept props: user info, onConfirm, onCancel
+  - [x] 12.3 Display warning message: "Are you sure you want to remove [Name]? This action cannot be undone."
+  - [x] 12.4 Add Cancel button (secondary variant)
+  - [x] 12.5 Add Remove button (destructive variant)
+  - [x] 12.6 Wire up to `removeUser` server action
+  - [x] 12.7 Add loading state during removal
+  - [x] 12.8 Handle success and error with appropriate toasts
 
 - [ ] 13.0 Implement pending invitation actions
   - [ ] 13.1 Add "Resend Invitation" option to pending invitation row actions

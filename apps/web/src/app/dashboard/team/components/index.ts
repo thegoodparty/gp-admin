@@ -1,3 +1,5 @@
 export * from './TeamPage'
 export * from './TeamTable'
 export * from './InviteDialog'
+export * from './RoleChangeDialog'
+export * from './RemoveUserDialog'

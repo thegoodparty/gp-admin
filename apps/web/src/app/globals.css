@@ -1,19 +1,7 @@
+/* Import compiled styleguide CSS (includes all component styles) */
+@import 'goodparty-styleguide/dist/index.css';
+
+/* Tailwind directives for local utility classes */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
-  }
-
-  .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}

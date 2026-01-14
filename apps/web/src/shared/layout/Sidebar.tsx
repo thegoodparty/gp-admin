@@ -117,10 +117,10 @@ export default function Sidebar() {
     <aside
       className={`
         bg-sidebar border-r border-sidebar-border
-        h-screen flex flex-col
+        min-h-[calc(100vh-64px)] flex flex-col
         transition-all duration-300 ease-in-out
         bg-gray-100
-        dark:bg-background
+        dark:bg-gray-900
         dark:border-gray-800
         ${isOpen ? 'w-64' : 'w-16'}
       `}

@@ -1,8 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from 'goodparty-styleguide'
-import { HiPlus } from 'react-icons/hi'
+import { Button, PlusIcon } from 'goodparty-styleguide'
 import { useRequireAdmin } from '@/shared/hooks'
 import { TeamUser, TeamInvitation } from '../types'
 import { TeamTable } from './TeamTable'
@@ -64,8 +63,10 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
           </p>
         </div>
         <Button onClick={handleOpenInviteDialog}>
-          <HiPlus className="size-4 mr-2" />
-          Invite User
+          <div className="flex items-center gap-2 p-2 pr-4">
+            <PlusIcon className="size-4" />
+            Invite User
+          </div>
         </Button>
       </div>
 
