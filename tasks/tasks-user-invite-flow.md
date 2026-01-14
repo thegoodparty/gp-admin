@@ -46,7 +46,7 @@
 - make sure to follow our cursor rules!
 - Use `npx playwright test` to run E2E tests
 - All Clerk operations go through Server Actions - no custom API routes needed
-- Use components from `goodparty-styleguide` for UI consistency
+- Use components from radix-ui when possible
 
 ## Instructions for Completing Tasks
 
@@ -138,10 +138,10 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 8.6 Import and render TeamTable component with fetched data
   - [x] 8.7 Add admin-only access check using `useRequireAdmin` or server-side check
 
-- [x] 9.0 Create TeamTable component with DataTable from styleguide
+- [x] 9.0 Create TeamTable component
   - [x] 9.1 Create `apps/web/src/app/dashboard/team/components/` directory
   - [x] 9.2 Create `TeamTable.tsx` component
-  - [x] 9.3 Import `DataTable`, `DataTableColumnHeader`, `Badge`, `Avatar`, `DropdownMenu` from goodparty-styleguide
+  - [x] 9.3 Import `DataTable`, `DataTableColumnHeader`, `Badge`, `Avatar`, `DropdownMenu` from
   - [x] 9.4 Define column definitions: Name (with Avatar), Email, Role, Status, Last Login, Invited By, Invite Date, Actions
   - [x] 9.5 Implement Status column with Badge component (Active/Pending variants)
   - [x] 9.6 Implement Role column showing role label
@@ -153,7 +153,7 @@ Update the file after completing each sub-task, not just after completing an ent
 
 - [x] 10.0 Create InviteDialog component
   - [x] 10.1 Create `InviteDialog.tsx` component
-  - [x] 10.2 Import `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter`, `Input`, `Select`, `Button` from styleguide
+  - [x] 10.2 Import `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogFooter`, `Input`, `Select`, `Button`
   - [x] 10.3 Create controlled form state for email and role
   - [x] 10.4 Add email input field with placeholder showing domain requirement
   - [x] 10.5 Add role select dropdown populated from `ROLE_OPTIONS`
@@ -186,13 +186,13 @@ Update the file after completing each sub-task, not just after completing an ent
   - [x] 12.7 Add loading state during removal
   - [x] 12.8 Handle success and error with appropriate toasts
 
-- [ ] 13.0 Implement pending invitation actions
-  - [ ] 13.1 Add "Resend Invitation" option to pending invitation row actions
-  - [ ] 13.2 Implement resend by calling `inviteUser` with same email/role (Clerk creates new invitation)
-  - [ ] 13.3 Add "Revoke Invitation" option to pending invitation row actions
-  - [ ] 13.4 Create confirmation dialog for revoking invitation
-  - [ ] 13.5 Wire up to `revokeInvitation` server action
-  - [ ] 13.6 Refresh table data after resend/revoke actions
+- [x] 13.0 Implement pending invitation actions
+  - [x] 13.1 Add "Resend Invitation" option to pending invitation row actions
+  - [x] 13.2 Implement resend by calling `inviteUser` with same email/role (Clerk creates new invitation)
+  - [x] 13.3 Add "Revoke Invitation" option to pending invitation row actions
+  - [x] 13.4 Create confirmation dialog for revoking invitation
+  - [x] 13.5 Wire up to `revokeInvitation` server action
+  - [x] 13.6 Refresh table data after resend/revoke actions
 
 - [ ] 14.0 Configure Clerk email templates
   - [ ] 14.1 Access Clerk Dashboard → Customization → Emails

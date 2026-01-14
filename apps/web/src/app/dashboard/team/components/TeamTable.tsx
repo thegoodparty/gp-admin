@@ -24,6 +24,7 @@ import { TeamUser, TeamInvitation } from '../types'
 import { ROLE_LABELS, ROLE_OPTIONS, Role } from '@/shared/lib/roles'
 import { RoleChangeDialog } from './RoleChangeDialog'
 import { RemoveUserDialog } from './RemoveUserDialog'
+import { RevokeInvitationDialog } from './RevokeInvitationDialog'
 
 type TeamMember = {
   id: string
@@ -77,7 +78,9 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   const [selectedUser, setSelectedUser] = useState<TeamMember | null>(null)
   const [roleChangeDialogOpen, setRoleChangeDialogOpen] = useState(false)
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false)
+  const [revokeDialogOpen, setRevokeDialogOpen] = useState(false)
   const [pendingNewRole, setPendingNewRole] = useState<Role | null>(null)
+  const [resendingId, setResendingId] = useState<string | null>(null)
 
   const data: TeamMember[] = useMemo(() => {
     const userMembers: TeamMember[] = users.map((user) => ({
@@ -133,18 +136,24 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   }
 
   const handleResendInvite = async (member: TeamMember) => {
-    const { revokeInvitation, inviteUser } = await import('../actions')
-    await revokeInvitation(member.id)
-    if (member.role) {
+    if (!member.role) return
+
+    setResendingId(member.id)
+    try {
+      const { revokeInvitation, inviteUser } = await import('../actions')
+      await revokeInvitation(member.id)
       await inviteUser(member.email, member.role)
+      onRefresh()
+    } catch (err) {
+      console.error('Failed to resend invitation:', err)
+    } finally {
+      setResendingId(null)
     }
-    onRefresh()
   }
 
-  const handleRevokeInvite = async (member: TeamMember) => {
-    const { revokeInvitation } = await import('../actions')
-    await revokeInvitation(member.id)
-    onRefresh()
+  const handleRevokeInvite = (member: TeamMember) => {
+    setSelectedUser(member)
+    setRevokeDialogOpen(true)
   }
 
   const columns: ColumnDef<TeamMember>[] = [
@@ -163,8 +172,22 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
           .slice(0, 2)
 
         return (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px' }}>
-            <div style={{ width: '32px', height: '32px', position: 'relative', borderRadius: '50%' }}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '8px',
+            }}
+          >
+            <div
+              style={{
+                width: '32px',
+                height: '32px',
+                position: 'relative',
+                borderRadius: '50%',
+              }}
+            >
               <Avatar size="xSmall">
                 {member.imageUrl ? (
                   <Avatar.Image
@@ -242,14 +265,14 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <IconButton
-                variant="ghost"
-                aria-label="Open actions menu"
-              >
+              <IconButton variant="ghost" aria-label="Open actions menu">
                 <MoreHorizontalIcon size={16} />
               </IconButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" style={{ padding: '4px', backgroundColor: 'white' }}>
+            <DropdownMenuContent
+              align="end"
+              style={{ padding: '4px', backgroundColor: 'white' }}
+            >
               {isUser ? (
                 <>
                   <DropdownMenuLabel style={{ padding: '4px' }}>
@@ -277,12 +300,20 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                 </>
               ) : (
                 <>
-                  <DropdownMenuItem onClick={() => handleResendInvite(member)}>
-                    Resend Invitation
+                  <DropdownMenuItem
+                    onClick={() => handleResendInvite(member)}
+                    disabled={resendingId === member.id}
+                    style={{ padding: '4px' }}
+                  >
+                    {resendingId === member.id
+                      ? 'Resending...'
+                      : 'Resend Invitation'}
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => handleRevokeInvite(member)}
+                    disabled={resendingId === member.id}
+                    style={{ padding: '4px' }}
                   >
                     Revoke Invitation
                   </DropdownMenuItem>
@@ -297,7 +328,14 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '4px' }}>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          padding: '4px',
+        }}
+      >
         <Select value={statusFilter} onValueChange={setStatusFilter}>
           <SelectTrigger style={{ width: '150px' }}>
             <SelectValue placeholder="Status" />
@@ -379,6 +417,25 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
             onRefresh()
           }}
           user={selectedUser}
+        />
+      )}
+
+      {selectedUser && (
+        <RevokeInvitationDialog
+          open={revokeDialogOpen}
+          onClose={() => {
+            setRevokeDialogOpen(false)
+            setSelectedUser(null)
+          }}
+          onSuccess={() => {
+            setRevokeDialogOpen(false)
+            setSelectedUser(null)
+            onRefresh()
+          }}
+          invitation={{
+            id: selectedUser.id,
+            email: selectedUser.email,
+          }}
         />
       )}
     </div>
