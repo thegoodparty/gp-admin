@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Button, PlusIcon } from '@/shared/components/ui'
 import { useRequireAdmin } from '@/shared/hooks'
 import { TeamUser, TeamInvitation } from '../types'
+import { listInvitations, listUsers } from '../actions'
 import { TeamTable } from './TeamTable'
 import { InviteDialog } from './InviteDialog'
 
@@ -19,7 +20,6 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
   const [isInviteDialogOpen, setIsInviteDialogOpen] = useState(false)
 
   const handleRefresh = async () => {
-    const { listUsers, listInvitations } = await import('../actions')
     const [newUsers, newInvitations] = await Promise.all([
       listUsers(),
       listInvitations(),
