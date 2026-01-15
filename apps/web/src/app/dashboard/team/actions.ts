@@ -47,6 +47,10 @@ export async function inviteUser(email: string, role: Role) {
     throw new Error(validation.error ?? 'Invalid email')
   }
 
+  if (!Object.values(ROLES).includes(role)) {
+    throw new Error('Invalid role')
+  }
+
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3500'
 
   const invitation = await client.invitations.createInvitation({

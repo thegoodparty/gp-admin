@@ -81,6 +81,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   const [revokeDialogOpen, setRevokeDialogOpen] = useState(false)
   const [pendingNewRole, setPendingNewRole] = useState<Role | null>(null)
   const [resendingId, setResendingId] = useState<string | null>(null)
+  const [resendError, setResendError] = useState<string | null>(null)
 
   const data: TeamMember[] = useMemo(() => {
     const userMembers: TeamMember[] = users.map((user) => ({
@@ -139,13 +140,24 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
     if (!member.role) return
 
     setResendingId(member.id)
+    setResendError(null)
     try {
       const { revokeInvitation, inviteUser } = await import('../actions')
-      await revokeInvitation(member.id)
       await inviteUser(member.email, member.role)
+      try {
+        await revokeInvitation(member.id)
+      } catch (err) {
+        setResendError(
+          err instanceof Error
+            ? err.message
+            : 'Invitation resent, but failed to revoke the previous invitation'
+        )
+      }
       onRefresh()
     } catch (err) {
-      console.error('Failed to resend invitation:', err)
+      setResendError(
+        err instanceof Error ? err.message : 'Failed to resend invitation'
+      )
     } finally {
       setResendingId(null)
     }
@@ -323,6 +335,11 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
       </div>
 
       <div>
+        {resendError && (
+          <div className="mb-3 rounded-md bg-red-50 p-3 text-sm text-red-500">
+            {resendError}
+          </div>
+        )}
         <DataTable
           columns={columns}
           data={data}
