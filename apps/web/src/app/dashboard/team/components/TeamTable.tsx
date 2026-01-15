@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import { DataTable } from '@/shared/components/ui'
 import { TeamUser, TeamInvitation } from '../types'
+import { useCurrentUser } from '@/shared/hooks'
 import { Role } from '@/shared/lib/roles'
 import { RoleChangeDialog } from './RoleChangeDialog'
 import { RemoveUserDialog } from './RemoveUserDialog'
@@ -18,6 +19,7 @@ interface TeamTableProps {
 }
 
 export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
+  const { id: currentUserId } = useCurrentUser()
   const [statusFilter, setStatusFilter] = useState<string>('all')
   const [roleFilter, setRoleFilter] = useState<string>('all')
   const [selectedUser, setSelectedUser] = useState<TeamMember | null>(null)
@@ -88,16 +90,8 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
     setResendError(null)
     try {
       const { revokeInvitation, inviteUser } = await import('../actions')
+      await revokeInvitation(member.id)
       await inviteUser(member.email, member.role)
-      try {
-        await revokeInvitation(member.id)
-      } catch (err) {
-        setResendError(
-          err instanceof Error
-            ? err.message
-            : 'Invitation resent, but failed to revoke the previous invitation'
-        )
-      }
       onRefresh()
     } catch (err) {
       setResendError(
@@ -114,6 +108,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   }
 
   const columns = buildTeamTableColumns({
+    currentUserId,
     resendingId,
     onChangeRole: handleChangeRole,
     onRemove: handleRemove,

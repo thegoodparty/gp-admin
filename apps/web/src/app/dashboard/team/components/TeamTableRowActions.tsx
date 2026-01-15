@@ -10,11 +10,12 @@ import {
   IconButton,
   MoreHorizontalIcon,
 } from '@/shared/components/ui'
-import { ROLE_OPTIONS, Role } from '@/shared/lib/roles'
+import { ROLE_OPTIONS, Role, ROLES } from '@/shared/lib/roles'
 import { TeamMember } from './teamTableTypes'
 
 interface TeamTableRowActionsProps {
   member: TeamMember
+  currentUserId: string
   resendingId: string | null
   onChangeRole: (member: TeamMember, role: Role) => void
   onRemove: (member: TeamMember) => void
@@ -24,6 +25,7 @@ interface TeamTableRowActionsProps {
 
 export function TeamTableRowActions({
   member,
+  currentUserId,
   resendingId,
   onChangeRole,
   onRemove,
@@ -31,6 +33,7 @@ export function TeamTableRowActions({
   onRevokeInvite,
 }: TeamTableRowActionsProps) {
   const isUser = member.type === 'user'
+  const isSelf = isUser && member.id === currentUserId
 
   return (
     <DropdownMenu>
@@ -46,7 +49,10 @@ export function TeamTableRowActions({
             {ROLE_OPTIONS.map((option) => (
               <DropdownMenuItem
                 key={option.value}
-                disabled={member.role === option.value}
+                disabled={
+                  member.role === option.value ||
+                  (isSelf && option.value !== ROLES.ADMIN)
+                }
                 onClick={() => onChangeRole(member, option.value)}
               >
                 {option.label}
@@ -57,6 +63,7 @@ export function TeamTableRowActions({
             <DropdownMenuItem
               variant="destructive"
               onClick={() => onRemove(member)}
+              disabled={isSelf}
             >
               Remove User
             </DropdownMenuItem>

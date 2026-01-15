@@ -8,6 +8,7 @@ import { TeamMember } from './teamTableTypes'
 import { TeamTableRowActions } from './TeamTableRowActions'
 
 interface TeamTableColumnOptions {
+  currentUserId: string
   resendingId: string | null
   onChangeRole: (member: TeamMember, role: Role) => void
   onRemove: (member: TeamMember) => void
@@ -16,6 +17,7 @@ interface TeamTableColumnOptions {
 }
 
 export function buildTeamTableColumns({
+  currentUserId,
   resendingId,
   onChangeRole,
   onRemove,
@@ -103,6 +105,7 @@ export function buildTeamTableColumns({
       cell: ({ row }) => (
         <TeamTableRowActions
           member={row.original}
+          currentUserId={currentUserId}
           resendingId={resendingId}
           onChangeRole={onChangeRole}
           onRemove={onRemove}

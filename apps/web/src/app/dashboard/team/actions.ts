@@ -109,7 +109,7 @@ export async function listInvitations() {
 }
 
 export async function updateUserRole(userId: string, newRole: Role) {
-  const { client } = await requireAdmin()
+  const { userId: adminUserId, client } = await requireAdmin()
 
   if (!userId) {
     throw new Error('User ID is required')
@@ -117,6 +117,10 @@ export async function updateUserRole(userId: string, newRole: Role) {
 
   if (!Object.values(ROLES).includes(newRole)) {
     throw new Error('Invalid role')
+  }
+
+  if (userId === adminUserId && newRole !== ROLES.ADMIN) {
+    throw new Error('You cannot change your own role')
   }
 
   await client.users.updateUserMetadata(userId, {
