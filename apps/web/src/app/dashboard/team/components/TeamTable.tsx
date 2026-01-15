@@ -1,45 +1,15 @@
 'use client'
 
 import { useMemo, useState } from 'react'
-import { ColumnDef } from '@tanstack/react-table'
-import {
-  DataTable,
-  DataTableColumnHeader,
-  Avatar,
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-  IconButton,
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-  MoreHorizontalIcon,
-} from '@/shared/components/ui'
+import { DataTable } from '@/shared/components/ui'
 import { TeamUser, TeamInvitation } from '../types'
-import { ROLE_LABELS, ROLE_OPTIONS, Role } from '@/shared/lib/roles'
-import { formatDate, formatRelativeTime } from '@/shared/utils'
+import { Role } from '@/shared/lib/roles'
 import { RoleChangeDialog } from './RoleChangeDialog'
 import { RemoveUserDialog } from './RemoveUserDialog'
 import { RevokeInvitationDialog } from './RevokeInvitationDialog'
-
-type TeamMember = {
-  id: string
-  type: 'user' | 'invitation'
-  email: string
-  name: string
-  imageUrl?: string
-  role: Role | undefined
-  status: 'active' | 'pending'
-  lastSignInAt: number | null
-  invitedBy: string | undefined
-  invitedAt: string | undefined
-  createdAt: number
-}
+import { TeamTableFilters } from './TeamTableFilters'
+import { buildTeamTableColumns } from './teamTableColumns'
+import { TeamMember } from './teamTableTypes'
 
 interface TeamTableProps {
   users: TeamUser[]
@@ -143,171 +113,22 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
     setRevokeDialogOpen(true)
   }
 
-  const columns: ColumnDef<TeamMember>[] = [
-    {
-      accessorKey: 'name',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
-      ),
-      cell: ({ row }) => {
-        const member = row.original
-        const initials = member.name
-          .split(' ')
-          .map((n) => n[0])
-          .join('')
-          .toUpperCase()
-          .slice(0, 2)
-
-        return (
-          <div className="flex items-center gap-3 p-2">
-            <Avatar size="xSmall" className="shrink-0">
-              {member.imageUrl ? (
-                <Avatar.Image src={member.imageUrl} alt={member.name} />
-              ) : (
-                <Avatar.Fallback>{initials || '?'}</Avatar.Fallback>
-              )}
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="font-medium">{member.name}</span>
-              <span className="text-sm text-zinc-500">{member.email}</span>
-            </div>
-          </div>
-        )
-      },
-    },
-    {
-      accessorKey: 'role',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Role" />
-      ),
-      cell: ({ row }) => {
-        const role = row.original.role
-        return role ? ROLE_LABELS[role] : '—'
-      },
-    },
-    {
-      accessorKey: 'status',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
-      ),
-      cell: ({ row }) => {
-        const status = row.original.status
-        const statusClasses =
-          status === 'active'
-            ? 'bg-green-500 text-white'
-            : 'bg-zinc-500 text-white'
-        return (
-          <div
-            className={`inline-block rounded-md px-4 py-1 text-sm ${statusClasses}`}
-          >
-            {status === 'active' ? 'Active' : 'Pending'}
-          </div>
-        )
-      },
-    },
-    {
-      accessorKey: 'lastSignInAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Last Login" />
-      ),
-      cell: ({ row }) => formatRelativeTime(row.original.lastSignInAt),
-    },
-    {
-      accessorKey: 'invitedAt',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Invited" />
-      ),
-      cell: ({ row }) => formatDate(row.original.invitedAt),
-    },
-    {
-      id: 'actions',
-      cell: ({ row }) => {
-        const member = row.original
-        const isUser = member.type === 'user'
-
-        return (
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <IconButton variant="ghost" aria-label="Open actions menu">
-                <MoreHorizontalIcon size={16} />
-              </IconButton>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {isUser ? (
-                <>
-                  <DropdownMenuLabel>Change Role</DropdownMenuLabel>
-                  {ROLE_OPTIONS.map((option) => (
-                    <DropdownMenuItem
-                      key={option.value}
-                      disabled={member.role === option.value}
-                      onClick={() => handleChangeRole(member, option.value)}
-                    >
-                      {option.label}
-                      {member.role === option.value && ' (current)'}
-                    </DropdownMenuItem>
-                  ))}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onClick={() => handleRemove(member)}
-                  >
-                    Remove User
-                  </DropdownMenuItem>
-                </>
-              ) : (
-                <>
-                  <DropdownMenuItem
-                    onClick={() => handleResendInvite(member)}
-                    disabled={resendingId === member.id}
-                  >
-                    {resendingId === member.id
-                      ? 'Resending...'
-                      : 'Resend Invitation'}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    variant="destructive"
-                    onClick={() => handleRevokeInvite(member)}
-                    disabled={resendingId === member.id}
-                  >
-                    Revoke Invitation
-                  </DropdownMenuItem>
-                </>
-              )}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        )
-      },
-    },
-  ]
+  const columns = buildTeamTableColumns({
+    resendingId,
+    onChangeRole: handleChangeRole,
+    onRemove: handleRemove,
+    onResendInvite: handleResendInvite,
+    onRevokeInvite: handleRevokeInvite,
+  })
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center gap-4 p-1">
-        <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[150px]" aria-label="Status filter">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Status</SelectItem>
-            <SelectItem value="active">Active</SelectItem>
-            <SelectItem value="pending">Pending</SelectItem>
-          </SelectContent>
-        </Select>
-
-        <Select value={roleFilter} onValueChange={setRoleFilter}>
-          <SelectTrigger className="w-[150px]" aria-label="Role filter">
-            <SelectValue placeholder="Role" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Roles</SelectItem>
-            {ROLE_OPTIONS.map((option) => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+      <TeamTableFilters
+        statusFilter={statusFilter}
+        roleFilter={roleFilter}
+        onStatusChange={setStatusFilter}
+        onRoleChange={setRoleFilter}
+      />
 
       <div>
         {resendError && (
