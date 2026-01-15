@@ -1,15 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  Button,
-} from '@/shared/components/ui'
+import { Dialog, Button, Flex, Text } from '@radix-ui/themes'
 import { Role, ROLE_OPTIONS, ROLES } from '@/shared/lib/roles'
 import {
   validateInviteEmail,
@@ -83,21 +75,22 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Invite Team Member</DialogTitle>
-          <DialogDescription>
-            Send an invitation to join the team. The user will receive an email
-            with a link to create their account.
-          </DialogDescription>
-        </DialogHeader>
+    <Dialog.Root
+      open={open}
+      onOpenChange={(isOpen) => !isOpen && handleClose()}
+    >
+      <Dialog.Content maxWidth="425px">
+        <Dialog.Title>Invite Team Member</Dialog.Title>
+        <Dialog.Description size="2" mb="4">
+          Send an invitation to join the team. The user will receive an email
+          with a link to create their account.
+        </Dialog.Description>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email" className="text-sm font-medium">
+        <Flex direction="column" gap="4">
+          <Flex direction="column" gap="2">
+            <Text as="label" size="2" weight="medium" htmlFor="email">
               Email Address
-            </label>
+            </Text>
             <input
               id="email"
               type="email"
@@ -108,30 +101,32 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
               disabled={isLoading}
               autoComplete="off"
               className={[
-                'w-full rounded-md border bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-zinc-400',
-                validationError ? 'border-red-500' : 'border-zinc-200',
+                'w-full rounded-md border bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-400',
+                validationError ? 'border-red-500' : 'border-gray-200',
               ]
                 .filter(Boolean)
                 .join(' ')}
             />
             {validationError && (
-              <p className="text-sm text-red-500">{validationError}</p>
+              <Text size="2" color="red">
+                {validationError}
+              </Text>
             )}
-            <p className="text-xs text-zinc-400">
+            <Text size="1" color="gray">
               Only {ALLOWED_EMAIL_DOMAIN} email addresses are allowed
-            </p>
-          </div>
+            </Text>
+          </Flex>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="role" className="text-sm font-medium">
+          <Flex direction="column" gap="2">
+            <Text as="label" size="2" weight="medium" htmlFor="role">
               Role
-            </label>
+            </Text>
             <select
               id="role"
               value={role}
               onChange={(e) => setRole(e.target.value as Role)}
               disabled={isLoading}
-              className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
+              className="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
             >
               {ROLE_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -139,28 +134,28 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
                 </option>
               ))}
             </select>
-          </div>
-        </div>
+          </Flex>
+        </Flex>
 
         {error && (
-          <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-500">
-            {error}
-          </div>
+          <Flex mt="4" p="3" className="rounded-md bg-red-50">
+            <Text size="2" color="red">
+              {error}
+            </Text>
+          </Flex>
         )}
 
-        <DialogFooter>
-          <Button
-            variant="secondary"
-            onClick={handleClose}
-            disabled={isLoading}
-          >
-            Cancel
-          </Button>
+        <Flex gap="3" mt="4" justify="end">
+          <Dialog.Close>
+            <Button variant="soft" color="gray" disabled={isLoading}>
+              Cancel
+            </Button>
+          </Dialog.Close>
           <Button onClick={handleSubmit} loading={isLoading}>
             Send Invitation
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }

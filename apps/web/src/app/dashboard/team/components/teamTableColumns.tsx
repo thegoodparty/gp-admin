@@ -1,7 +1,8 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { Avatar, DataTableColumnHeader } from '@/shared/components/ui'
+import { Avatar, Flex, Text, Badge } from '@radix-ui/themes'
+import { DataTableColumnHeader } from '@/shared/components/ui'
 import { ROLE_LABELS, Role } from '@/shared/lib/roles'
 import { formatDate, formatRelativeTime } from '@/shared/utils'
 import { TeamMember } from './teamTableTypes'
@@ -40,19 +41,20 @@ export function buildTeamTableColumns({
           .slice(0, 2)
 
         return (
-          <div className="flex items-center gap-3 p-2">
-            <Avatar size="xSmall" className="shrink-0">
-              {member.imageUrl ? (
-                <Avatar.Image src={member.imageUrl} alt={member.name} />
-              ) : (
-                <Avatar.Fallback>{initials || '?'}</Avatar.Fallback>
-              )}
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="font-medium">{member.name}</span>
-              <span className="text-sm text-zinc-500">{member.email}</span>
-            </div>
-          </div>
+          <Flex align="center" gap="3" p="2">
+            <Avatar
+              size="2"
+              src={member.imageUrl}
+              fallback={initials || '?'}
+              radius="full"
+            />
+            <Flex direction="column">
+              <Text weight="medium">{member.name}</Text>
+              <Text size="2" color="gray">
+                {member.email}
+              </Text>
+            </Flex>
+          </Flex>
         )
       },
     },
@@ -73,16 +75,10 @@ export function buildTeamTableColumns({
       ),
       cell: ({ row }) => {
         const status = row.original.status
-        const statusClasses =
-          status === 'active'
-            ? 'bg-green-500 text-white'
-            : 'bg-zinc-500 text-white'
         return (
-          <div
-            className={`inline-block rounded-md px-4 py-1 text-sm ${statusClasses}`}
-          >
+          <Badge color={status === 'active' ? 'green' : 'gray'}>
             {status === 'active' ? 'Active' : 'Pending'}
-          </div>
+          </Badge>
         )
       },
     },

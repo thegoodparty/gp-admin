@@ -1,15 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-  Button,
-} from '@/shared/components/ui'
+import { Dialog, Button, Flex, Text } from '@radix-ui/themes'
 import { revokeInvitation } from '../actions'
 
 interface RevokeInvitationDialogProps {
@@ -48,36 +40,34 @@ export function RevokeInvitationDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Revoke Invitation</DialogTitle>
-          <DialogDescription>
-            Are you sure you want to revoke the invitation for{' '}
-            <strong>{invitation.email}</strong>? They will no longer be able to
-            join using this invitation link.
-          </DialogDescription>
-        </DialogHeader>
+    <Dialog.Root open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+      <Dialog.Content maxWidth="425px">
+        <Dialog.Title>Revoke Invitation</Dialog.Title>
+        <Dialog.Description size="2" mb="4">
+          Are you sure you want to revoke the invitation for{' '}
+          <Text weight="bold">{invitation.email}</Text>? They will no longer be
+          able to join using this invitation link.
+        </Dialog.Description>
 
         {error && (
-          <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">
-            {error}
-          </div>
+          <Flex p="3" className="rounded-md bg-red-50">
+            <Text size="2" color="red">
+              {error}
+            </Text>
+          </Flex>
         )}
 
-        <DialogFooter>
-          <Button variant="secondary" onClick={onClose} disabled={isLoading}>
-            Cancel
-          </Button>
-          <Button
-            variant="destructive"
-            onClick={handleConfirm}
-            loading={isLoading}
-          >
+        <Flex gap="3" mt="4" justify="end">
+          <Dialog.Close>
+            <Button variant="soft" color="gray" disabled={isLoading}>
+              Cancel
+            </Button>
+          </Dialog.Close>
+          <Button color="red" onClick={handleConfirm} loading={isLoading}>
             Revoke Invitation
           </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
   )
 }

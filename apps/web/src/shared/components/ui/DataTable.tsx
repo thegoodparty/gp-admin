@@ -13,6 +13,7 @@ import {
   Column,
   getPaginationRowModel,
 } from '@tanstack/react-table'
+import { Button, Flex, Text } from '@radix-ui/themes'
 import { ArrowUpDown, ArrowUp, ArrowDown, Search } from 'lucide-react'
 
 interface DataTableProps<TData, TValue> {
@@ -123,41 +124,29 @@ export function DataTable<TData, TValue>({
       </div>
 
       {pagination && (
-        <div className="mt-4 flex items-center justify-between">
-          <div className="text-sm text-zinc-500">
+        <Flex mt="4" align="center" justify="between">
+          <Text size="2" color="gray">
             {table.getFilteredRowModel().rows.length} row(s)
-          </div>
-          <div className="flex gap-2">
-            <button
+          </Text>
+          <Flex gap="2">
+            <Button
+              variant="soft"
+              color="gray"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className={[
-                'rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm transition',
-                table.getCanPreviousPage()
-                  ? 'cursor-pointer hover:bg-zinc-50'
-                  : 'cursor-not-allowed opacity-50',
-              ]
-                .filter(Boolean)
-                .join(' ')}
             >
               Previous
-            </button>
-            <button
+            </Button>
+            <Button
+              variant="soft"
+              color="gray"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className={[
-                'rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm transition',
-                table.getCanNextPage()
-                  ? 'cursor-pointer hover:bg-zinc-50'
-                  : 'cursor-not-allowed opacity-50',
-              ]
-                .filter(Boolean)
-                .join(' ')}
             >
               Next
-            </button>
-          </div>
-        </div>
+            </Button>
+          </Flex>
+        </Flex>
       )}
     </div>
   )

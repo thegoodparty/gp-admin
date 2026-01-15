@@ -1,15 +1,7 @@
 'use client'
 
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuLabel,
-  IconButton,
-  MoreHorizontalIcon,
-} from '@/shared/components/ui'
+import { DropdownMenu, IconButton } from '@radix-ui/themes'
+import { MoreHorizontal } from 'lucide-react'
 import { ROLE_OPTIONS, Role, ROLES } from '@/shared/lib/roles'
 import { TeamMember } from './teamTableTypes'
 
@@ -36,56 +28,56 @@ export function TeamTableRowActions({
   const isSelf = isUser && member.id === currentUserId
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
         <IconButton variant="ghost" aria-label="Open actions menu">
-          <MoreHorizontalIcon size={16} />
+          <MoreHorizontal size={16} />
         </IconButton>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content align="end">
         {isUser ? (
           <>
-            <DropdownMenuLabel>Change Role</DropdownMenuLabel>
+            <DropdownMenu.Label>Change Role</DropdownMenu.Label>
             {ROLE_OPTIONS.map((option) => (
-              <DropdownMenuItem
+              <DropdownMenu.Item
                 key={option.value}
                 disabled={
                   member.role === option.value ||
                   (isSelf && option.value !== ROLES.ADMIN)
                 }
-                onClick={() => onChangeRole(member, option.value)}
+                onSelect={() => onChangeRole(member, option.value)}
               >
                 {option.label}
                 {member.role === option.value && ' (current)'}
-              </DropdownMenuItem>
+              </DropdownMenu.Item>
             ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => onRemove(member)}
+            <DropdownMenu.Separator />
+            <DropdownMenu.Item
+              color="red"
+              onSelect={() => onRemove(member)}
               disabled={isSelf}
             >
               Remove User
-            </DropdownMenuItem>
+            </DropdownMenu.Item>
           </>
         ) : (
           <>
-            <DropdownMenuItem
-              onClick={() => onResendInvite(member)}
+            <DropdownMenu.Item
+              onSelect={() => onResendInvite(member)}
               disabled={resendingId === member.id}
             >
               {resendingId === member.id ? 'Resending...' : 'Resend Invitation'}
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              variant="destructive"
-              onClick={() => onRevokeInvite(member)}
+            </DropdownMenu.Item>
+            <DropdownMenu.Item
+              color="red"
+              onSelect={() => onRevokeInvite(member)}
               disabled={resendingId === member.id}
             >
               Revoke Invitation
-            </DropdownMenuItem>
+            </DropdownMenu.Item>
           </>
         )}
-      </DropdownMenuContent>
-    </DropdownMenu>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   )
 }

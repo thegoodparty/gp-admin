@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { Flex, Text } from '@radix-ui/themes'
 import { DataTable } from '@/shared/components/ui'
 import { TeamUser, TeamInvitation } from '../types'
 import { useCurrentUser } from '@/shared/hooks'
@@ -117,7 +118,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   })
 
   return (
-    <div className="flex flex-col gap-4">
+    <Flex direction="column" gap="4">
       <TeamTableFilters
         statusFilter={statusFilter}
         roleFilter={roleFilter}
@@ -127,9 +128,11 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
 
       <div>
         {resendError && (
-          <div className="mb-3 rounded-md bg-red-50 p-3 text-sm text-red-500">
-            {resendError}
-          </div>
+          <Flex mb="3" p="3" className="rounded-md bg-red-50">
+            <Text size="2" color="red">
+              {resendError}
+            </Text>
+          </Flex>
         )}
         <DataTable
           columns={columns}
@@ -194,6 +197,6 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
           }}
         />
       )}
-    </div>
+    </Flex>
   )
 }

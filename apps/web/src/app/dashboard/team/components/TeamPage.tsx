@@ -1,7 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Button, PlusIcon } from '@/shared/components/ui'
+import { Button, Flex, Text, Heading } from '@radix-ui/themes'
+import { Plus } from 'lucide-react'
 import { useRequireAdmin } from '@/shared/hooks'
 import { TeamUser, TeamInvitation } from '../types'
 import { listInvitations, listUsers } from '../actions'
@@ -43,9 +44,9 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
 
   if (isLoading) {
     return (
-      <div className="flex h-64 items-center justify-center">
-        <div className="text-zinc-500">Loading...</div>
-      </div>
+      <Flex height="256px" align="center" justify="center">
+        <Text color="gray">Loading...</Text>
+      </Flex>
     )
   }
 
@@ -54,21 +55,21 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <Flex direction="column" gap="6">
+      <Flex wrap="wrap" align="center" justify="between" gap="4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Team Management</h1>
-          <p className="mt-1 text-zinc-500">
+          <Heading size="6" as="h1">
+            Team Management
+          </Heading>
+          <Text size="2" color="gray" mt="1">
             Manage team members and send invitations
-          </p>
+          </Text>
         </div>
         <Button onClick={handleOpenInviteDialog}>
-          <div className="flex items-center gap-2 px-2 py-1">
-            <PlusIcon size={16} />
-            Invite User
-          </div>
+          <Plus size={16} />
+          Invite User
         </Button>
-      </div>
+      </Flex>
 
       <TeamTable
         users={users}
@@ -81,6 +82,6 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
         onClose={handleCloseInviteDialog}
         onSuccess={handleInviteSuccess}
       />
-    </div>
+    </Flex>
   )
 }
