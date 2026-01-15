@@ -297,7 +297,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
     <div className="flex flex-col gap-4">
       <div className="flex items-center gap-4 p-1">
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[150px]" aria-label="Status filter">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
           <SelectContent>
@@ -308,7 +308,7 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
         </Select>
 
         <Select value={roleFilter} onValueChange={setRoleFilter}>
-          <SelectTrigger className="w-[150px]">
+          <SelectTrigger className="w-[150px]" aria-label="Role filter">
             <SelectValue placeholder="Role" />
           </SelectTrigger>
           <SelectContent>
