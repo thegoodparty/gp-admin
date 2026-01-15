@@ -5,34 +5,30 @@ import { forwardRef, ComponentPropsWithoutRef } from 'react'
 
 type AvatarSize = 'xSmall' | 'small' | 'medium' | 'large'
 
-const sizeMap: Record<AvatarSize, string> = {
-  xSmall: '32px',
-  small: '40px',
-  medium: '48px',
-  large: '64px',
+const sizeClasses: Record<AvatarSize, string> = {
+  xSmall: 'h-8 w-8',
+  small: 'h-10 w-10',
+  medium: 'h-12 w-12',
+  large: 'h-16 w-16',
 }
 
-interface AvatarProps extends ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
+interface AvatarProps extends ComponentPropsWithoutRef<
+  typeof AvatarPrimitive.Root
+> {
   size?: AvatarSize
 }
 
 const AvatarRoot = forwardRef<HTMLSpanElement, AvatarProps>(
-  ({ size = 'medium', style, ...props }, ref) => (
+  ({ size = 'medium', className, ...props }, ref) => (
     <AvatarPrimitive.Root
       ref={ref}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        verticalAlign: 'middle',
-        overflow: 'hidden',
-        userSelect: 'none',
-        width: sizeMap[size],
-        height: sizeMap[size],
-        borderRadius: '50%',
-        backgroundColor: '#e4e4e7',
-        ...style,
-      }}
+      className={[
+        'inline-flex items-center justify-center align-middle overflow-hidden rounded-full bg-zinc-200 select-none',
+        sizeClasses[size],
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       {...props}
     />
   )
@@ -42,16 +38,12 @@ AvatarRoot.displayName = 'Avatar'
 const AvatarImage = forwardRef<
   HTMLImageElement,
   ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <AvatarPrimitive.Image
     ref={ref}
-    style={{
-      width: '100%',
-      height: '100%',
-      objectFit: 'cover',
-      borderRadius: 'inherit',
-      ...style,
-    }}
+    className={['h-full w-full rounded-full object-cover', className]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   />
 ))
@@ -60,22 +52,16 @@ AvatarImage.displayName = 'AvatarImage'
 const AvatarFallback = forwardRef<
   HTMLSpanElement,
   ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <AvatarPrimitive.Fallback
     ref={ref}
     delayMs={600}
-    style={{
-      width: '100%',
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: '#3b82f6',
-      color: 'white',
-      fontSize: '14px',
-      fontWeight: 500,
-      ...style,
-    }}
+    className={[
+      'flex h-full w-full items-center justify-center rounded-full bg-blue-500 text-sm font-medium text-white',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   />
 ))

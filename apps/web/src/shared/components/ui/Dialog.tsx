@@ -14,12 +14,7 @@ export const DialogOverlay = forwardRef<
 >((props, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    style={{
-      position: 'fixed',
-      inset: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      zIndex: 50,
-    }}
+    className="fixed inset-0 z-50 bg-black/50"
     {...props}
   />
 ))
@@ -33,21 +28,7 @@ export const DialogContent = forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      style={{
-        position: 'fixed',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: 'white',
-        borderRadius: '8px',
-        padding: '24px',
-        width: '100%',
-        maxWidth: '425px',
-        maxHeight: '85vh',
-        overflow: 'auto',
-        zIndex: 50,
-        boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-      }}
+      className="fixed left-1/2 top-1/2 z-50 w-full max-w-[425px] max-h-[85vh] -translate-x-1/2 -translate-y-1/2 overflow-auto rounded-lg bg-white p-6 shadow-xl"
       {...props}
     >
       {children}
@@ -57,21 +38,12 @@ export const DialogContent = forwardRef<
 DialogContent.displayName = 'DialogContent'
 
 export const DialogHeader = ({ children }: { children: ReactNode }) => (
-  <div style={{ marginBottom: '16px' }}>{children}</div>
+  <div className="mb-4">{children}</div>
 )
 DialogHeader.displayName = 'DialogHeader'
 
 export const DialogFooter = ({ children }: { children: ReactNode }) => (
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'flex-end',
-      gap: '8px',
-      marginTop: '24px',
-    }}
-  >
-    {children}
-  </div>
+  <div className="mt-6 flex items-center justify-end gap-2">{children}</div>
 )
 DialogFooter.displayName = 'DialogFooter'
 
@@ -81,11 +53,7 @@ export const DialogTitle = forwardRef<
 >((props, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    style={{
-      fontSize: '18px',
-      fontWeight: 600,
-      marginBottom: '8px',
-    }}
+    className="mb-2 text-lg font-semibold"
     {...props}
   />
 ))
@@ -97,10 +65,7 @@ export const DialogDescription = forwardRef<
 >((props, ref) => (
   <DialogPrimitive.Description
     ref={ref}
-    style={{
-      fontSize: '14px',
-      color: '#6b7280',
-    }}
+    className="text-sm text-zinc-500"
     {...props}
   />
 ))

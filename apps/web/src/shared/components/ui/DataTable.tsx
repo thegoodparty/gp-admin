@@ -52,16 +52,10 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       {searchKey && (
-        <div style={{ marginBottom: '16px', position: 'relative' }}>
+        <div className="relative mb-4">
           <Search
             size={16}
-            style={{
-              position: 'absolute',
-              left: '12px',
-              top: '50%',
-              transform: 'translateY(-50%)',
-              color: '#9ca3af',
-            }}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
           />
           <input
             placeholder={searchPlaceholder}
@@ -71,49 +65,20 @@ export function DataTable<TData, TValue>({
             onChange={(event) =>
               table.getColumn(searchKey)?.setFilterValue(event.target.value)
             }
-            style={{
-              width: '100%',
-              maxWidth: '300px',
-              padding: '8px 12px',
-              paddingLeft: '36px',
-              fontSize: '14px',
-              border: '1px solid #e4e4e7',
-              borderRadius: '6px',
-              outline: 'none',
-            }}
+            className="w-full max-w-[300px] rounded-md border border-zinc-200 bg-white py-2 pl-9 pr-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
           />
         </div>
       )}
 
-      <div
-        style={{
-          border: '1px solid #e4e4e7',
-          borderRadius: '8px',
-          overflow: 'hidden',
-        }}
-      >
-        <table
-          style={{
-            width: '100%',
-            borderCollapse: 'collapse',
-            fontSize: '14px',
-          }}
-        >
+      <div className="overflow-hidden rounded-lg border border-zinc-200">
+        <table className="w-full border-collapse text-sm">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr
-                key={headerGroup.id}
-                style={{ borderBottom: '1px solid #e4e4e7' }}
-              >
+              <tr key={headerGroup.id} className="border-b border-zinc-200">
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    style={{
-                      padding: '12px 16px',
-                      textAlign: 'left',
-                      fontWeight: 500,
-                      backgroundColor: '#fafafa',
-                    }}
+                    className="bg-zinc-50 px-4 py-3 text-left font-medium text-zinc-900"
                   >
                     {header.isPlaceholder
                       ? null
@@ -131,16 +96,10 @@ export function DataTable<TData, TValue>({
               table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  style={{ borderBottom: '1px solid #e4e4e7' }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#fafafa'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                  }}
+                  className="border-b border-zinc-200 hover:bg-zinc-50"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} style={{ padding: '12px 16px' }}>
+                    <td key={cell.id} className="px-4 py-3 align-middle">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -153,11 +112,7 @@ export function DataTable<TData, TValue>({
               <tr>
                 <td
                   colSpan={columns.length}
-                  style={{
-                    padding: '24px',
-                    textAlign: 'center',
-                    color: '#6b7280',
-                  }}
+                  className="px-4 py-6 text-center text-sm text-zinc-500"
                 >
                   No results.
                 </td>
@@ -168,45 +123,36 @@ export function DataTable<TData, TValue>({
       </div>
 
       {pagination && (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: '16px',
-          }}
-        >
-          <div style={{ fontSize: '14px', color: '#6b7280' }}>
+        <div className="mt-4 flex items-center justify-between">
+          <div className="text-sm text-zinc-500">
             {table.getFilteredRowModel().rows.length} row(s)
           </div>
-          <div style={{ display: 'flex', gap: '8px' }}>
+          <div className="flex gap-2">
             <button
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              style={{
-                padding: '8px 12px',
-                fontSize: '14px',
-                border: '1px solid #e4e4e7',
-                borderRadius: '6px',
-                backgroundColor: 'white',
-                cursor: table.getCanPreviousPage() ? 'pointer' : 'not-allowed',
-                opacity: table.getCanPreviousPage() ? 1 : 0.5,
-              }}
+              className={[
+                'rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm transition',
+                table.getCanPreviousPage()
+                  ? 'cursor-pointer hover:bg-zinc-50'
+                  : 'cursor-not-allowed opacity-50',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             >
               Previous
             </button>
             <button
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              style={{
-                padding: '8px 12px',
-                fontSize: '14px',
-                border: '1px solid #e4e4e7',
-                borderRadius: '6px',
-                backgroundColor: 'white',
-                cursor: table.getCanNextPage() ? 'pointer' : 'not-allowed',
-                opacity: table.getCanNextPage() ? 1 : 0.5,
-              }}
+              className={[
+                'rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm transition',
+                table.getCanNextPage()
+                  ? 'cursor-pointer hover:bg-zinc-50'
+                  : 'cursor-not-allowed opacity-50',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             >
               Next
             </button>
@@ -237,17 +183,7 @@ export function DataTableColumnHeader<TData, TValue>({
   return (
     <button
       onClick={() => column.toggleSorting(sorted === 'asc')}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '4px',
-        background: 'none',
-        border: 'none',
-        padding: 0,
-        font: 'inherit',
-        fontWeight: 500,
-        cursor: 'pointer',
-      }}
+      className="flex items-center gap-1 bg-transparent p-0 text-left font-medium text-zinc-900 outline-none"
     >
       {title}
       {sorted === 'asc' ? (
@@ -255,7 +191,7 @@ export function DataTableColumnHeader<TData, TValue>({
       ) : sorted === 'desc' ? (
         <ArrowDown size={14} />
       ) : (
-        <ArrowUpDown size={14} style={{ color: '#9ca3af' }} />
+        <ArrowUpDown size={14} className="text-zinc-400" />
       )}
     </button>
   )

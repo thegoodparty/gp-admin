@@ -13,72 +13,58 @@ export const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 export const DropdownMenuContent = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Portal>
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={4}
-      style={{
-        minWidth: '160px',
-        backgroundColor: 'white',
-        borderRadius: '6px',
-        padding: '4px',
-        boxShadow:
-          '0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2)',
-        zIndex: 50,
-        ...style,
-      }}
+      className={[
+        'z-50 min-w-[160px] rounded-md border border-zinc-200 bg-white p-1 shadow-lg',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>
 ))
 DropdownMenuContent.displayName = 'DropdownMenuContent'
 
-interface DropdownMenuItemProps
-  extends ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Item> {
+interface DropdownMenuItemProps extends ComponentPropsWithoutRef<
+  typeof DropdownMenuPrimitive.Item
+> {
   variant?: 'default' | 'destructive'
 }
 
-export const DropdownMenuItem = forwardRef<HTMLDivElement, DropdownMenuItemProps>(
-  ({ variant = 'default', style, ...props }, ref) => (
-    <DropdownMenuPrimitive.Item
-      ref={ref}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        padding: '8px 12px',
-        fontSize: '14px',
-        borderRadius: '4px',
-        cursor: 'pointer',
-        outline: 'none',
-        color: variant === 'destructive' ? '#ef4444' : '#18181b',
-        ...style,
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = '#f4f4f5'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'transparent'
-      }}
-      {...props}
-    />
-  )
-)
+export const DropdownMenuItem = forwardRef<
+  HTMLDivElement,
+  DropdownMenuItemProps
+>(({ variant = 'default', className, ...props }, ref) => (
+  <DropdownMenuPrimitive.Item
+    ref={ref}
+    className={[
+      'relative flex cursor-pointer select-none items-center rounded-sm px-3 py-2 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-zinc-100 data-[highlighted]:text-zinc-900',
+      variant === 'destructive'
+        ? 'text-red-500 data-[highlighted]:bg-red-50 data-[highlighted]:text-red-600'
+        : 'text-zinc-900',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')}
+    {...props}
+  />
+))
 DropdownMenuItem.displayName = 'DropdownMenuItem'
 
 export const DropdownMenuLabel = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Label>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Label
     ref={ref}
-    style={{
-      padding: '8px 12px',
-      fontSize: '12px',
-      fontWeight: 600,
-      color: '#6b7280',
-      ...style,
-    }}
+    className={['px-3 py-2 text-xs font-semibold text-zinc-500', className]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   />
 ))
@@ -87,15 +73,10 @@ DropdownMenuLabel.displayName = 'DropdownMenuLabel'
 export const DropdownMenuSeparator = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Separator>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <DropdownMenuPrimitive.Separator
     ref={ref}
-    style={{
-      height: '1px',
-      backgroundColor: '#e4e4e7',
-      margin: '4px 0',
-      ...style,
-    }}
+    className={['my-1 h-px bg-zinc-200', className].filter(Boolean).join(' ')}
     {...props}
   />
 ))
@@ -104,32 +85,18 @@ DropdownMenuSeparator.displayName = 'DropdownMenuSeparator'
 export const DropdownMenuCheckboxItem = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.CheckboxItem>
->(({ children, style, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <DropdownMenuPrimitive.CheckboxItem
     ref={ref}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      padding: '8px 12px',
-      paddingLeft: '32px',
-      fontSize: '14px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      outline: 'none',
-      ...style,
-    }}
+    className={[
+      'relative flex cursor-pointer select-none items-center rounded-sm py-2 pl-8 pr-3 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-zinc-100 data-[highlighted]:text-zinc-900',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   >
-    <DropdownMenuPrimitive.ItemIndicator
-      style={{
-        position: 'absolute',
-        left: '8px',
-        width: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <DropdownMenuPrimitive.ItemIndicator className="absolute left-2 flex h-4 w-4 items-center justify-center">
       ✓
     </DropdownMenuPrimitive.ItemIndicator>
     {children}
@@ -140,32 +107,18 @@ DropdownMenuCheckboxItem.displayName = 'DropdownMenuCheckboxItem'
 export const DropdownMenuRadioItem = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.RadioItem>
->(({ children, style, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <DropdownMenuPrimitive.RadioItem
     ref={ref}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      padding: '8px 12px',
-      paddingLeft: '32px',
-      fontSize: '14px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      outline: 'none',
-      ...style,
-    }}
+    className={[
+      'relative flex cursor-pointer select-none items-center rounded-sm py-2 pl-8 pr-3 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-zinc-100 data-[highlighted]:text-zinc-900',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   >
-    <DropdownMenuPrimitive.ItemIndicator
-      style={{
-        position: 'absolute',
-        left: '8px',
-        width: '16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <DropdownMenuPrimitive.ItemIndicator className="absolute left-2 flex h-4 w-4 items-center justify-center">
       ●
     </DropdownMenuPrimitive.ItemIndicator>
     {children}

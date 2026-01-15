@@ -5,7 +5,7 @@ test.describe('Team Management', () => {
   test.describe('Sidebar Navigation', () => {
     test('Admin can see Team in sidebar', async ({ page }) => {
       await signInAsAdmin(page)
-      await page.waitForSelector('aside')
+      await expect(page.getByRole('complementary')).toBeVisible()
 
       const teamLink = page.getByRole('link', { name: 'Team' })
       await expect(teamLink).toBeVisible()
@@ -13,7 +13,7 @@ test.describe('Team Management', () => {
 
     test('Sales user cannot see Team in sidebar', async ({ page }) => {
       await signInAsSales(page)
-      await page.waitForSelector('aside')
+      await expect(page.getByRole('complementary')).toBeVisible()
 
       const teamLink = page.getByRole('link', { name: 'Team' })
       await expect(teamLink).not.toBeVisible()
@@ -21,7 +21,7 @@ test.describe('Team Management', () => {
 
     test('Read-only user cannot see Team in sidebar', async ({ page }) => {
       await signInAsReadOnly(page)
-      await page.waitForSelector('aside')
+      await expect(page.getByRole('complementary')).toBeVisible()
 
       const teamLink = page.getByRole('link', { name: 'Team' })
       await expect(teamLink).not.toBeVisible()
@@ -140,7 +140,7 @@ test.describe('Team Management', () => {
     })
 
     test('Team table displays users', async ({ page }) => {
-      await expect(page.locator('table')).toBeVisible()
+      await expect(page.getByRole('table')).toBeVisible()
       await expect(
         page.getByRole('columnheader', { name: 'Name' })
       ).toBeVisible()
@@ -154,8 +154,7 @@ test.describe('Team Management', () => {
 
     test('Can filter by status', async ({ page }) => {
       const statusFilter = page
-        .locator('button')
-        .filter({ hasText: /All Status|Active|Pending/ })
+        .getByRole('button', { name: /All Status|Active|Pending/ })
         .first()
       await expect(statusFilter).toBeVisible()
       await statusFilter.click()
@@ -169,8 +168,7 @@ test.describe('Team Management', () => {
 
     test('Can filter by role', async ({ page }) => {
       const roleFilter = page
-        .locator('button')
-        .filter({ hasText: /All Roles|Admin|Sales|Read Only/ })
+        .getByRole('button', { name: /All Roles|Admin|Sales|Read Only/ })
         .first()
       await expect(roleFilter).toBeVisible()
       await roleFilter.click()
@@ -193,72 +191,60 @@ test.describe('Team Management', () => {
     })
 
     test('Role change confirmation dialog appears', async ({ page }) => {
-      await page.waitForSelector('table')
+      await expect(page.getByRole('table')).toBeVisible()
 
       const actionsButton = page
         .getByRole('button', { name: 'Open actions menu' })
         .first()
 
-      if (await actionsButton.isVisible()) {
-        await actionsButton.click()
-        await expect(page.getByText('Change Role')).toBeVisible()
+      await expect(actionsButton).toBeVisible()
+      await actionsButton.click()
+      await expect(page.getByText('Change Role')).toBeVisible()
 
-        const salesOption = page
-          .getByRole('menuitem', { name: /Sales/i })
-          .first()
-        if (
-          (await salesOption.isVisible()) &&
-          (await salesOption.isEnabled())
-        ) {
-          await salesOption.click()
+      const salesOption = page.getByRole('menuitem', { name: /Sales/i }).first()
+      await expect(salesOption).toBeVisible()
+      await expect(salesOption).toBeEnabled()
+      await salesOption.click()
 
-          await expect(
-            page.getByRole('heading', { name: 'Change Role' })
-          ).toBeVisible()
-          await expect(
-            page.getByText(/Are you sure you want to change/i)
-          ).toBeVisible()
-          await expect(
-            page.getByRole('button', { name: 'Cancel' })
-          ).toBeVisible()
-          await expect(
-            page.getByRole('button', { name: 'Change Role' })
-          ).toBeVisible()
-        }
-      }
+      await expect(
+        page.getByRole('heading', { name: 'Change Role' })
+      ).toBeVisible()
+      await expect(
+        page.getByText(/Are you sure you want to change/i)
+      ).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible()
+      await expect(
+        page.getByRole('button', { name: 'Change Role' })
+      ).toBeVisible()
     })
 
     test('Remove user confirmation dialog appears', async ({ page }) => {
-      await page.waitForSelector('table')
+      await expect(page.getByRole('table')).toBeVisible()
 
       const actionsButton = page
         .getByRole('button', { name: 'Open actions menu' })
         .first()
 
-      if (await actionsButton.isVisible()) {
-        await actionsButton.click()
+      await expect(actionsButton).toBeVisible()
+      await actionsButton.click()
 
-        const removeOption = page.getByRole('menuitem', { name: 'Remove User' })
-        if (await removeOption.isVisible()) {
-          await removeOption.click()
+      const removeOption = page.getByRole('menuitem', { name: 'Remove User' })
+      await expect(removeOption).toBeVisible()
+      await removeOption.click()
 
-          await expect(
-            page.getByRole('heading', { name: 'Remove User' })
-          ).toBeVisible()
-          await expect(
-            page.getByText(/Are you sure you want to remove/i)
-          ).toBeVisible()
-          await expect(
-            page.getByText(/This action cannot be undone/i)
-          ).toBeVisible()
-          await expect(
-            page.getByRole('button', { name: 'Cancel' })
-          ).toBeVisible()
-          await expect(
-            page.getByRole('button', { name: 'Remove User' })
-          ).toBeVisible()
-        }
-      }
+      await expect(
+        page.getByRole('heading', { name: 'Remove User' })
+      ).toBeVisible()
+      await expect(
+        page.getByText(/Are you sure you want to remove/i)
+      ).toBeVisible()
+      await expect(
+        page.getByText(/This action cannot be undone/i)
+      ).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible()
+      await expect(
+        page.getByRole('button', { name: 'Remove User' })
+      ).toBeVisible()
     })
   })
 
@@ -268,30 +254,27 @@ test.describe('Team Management', () => {
     }) => {
       await signInAsAdmin(page)
       await page.goto('/dashboard/team')
-      await page.waitForSelector('table')
+      await expect(page.getByRole('table')).toBeVisible()
 
       const statusFilter = page
-        .locator('button')
-        .filter({ hasText: /All Status/ })
+        .getByRole('button', { name: /All Status/ })
         .first()
       await statusFilter.click()
       await page.getByRole('option', { name: 'Pending' }).click()
-      await page.waitForTimeout(500)
 
       const actionsButton = page
         .getByRole('button', { name: 'Open actions menu' })
         .first()
 
-      if (await actionsButton.isVisible()) {
-        await actionsButton.click()
+      await expect(actionsButton).toBeVisible()
+      await actionsButton.click()
 
-        await expect(
-          page.getByRole('menuitem', { name: 'Resend Invitation' })
-        ).toBeVisible()
-        await expect(
-          page.getByRole('menuitem', { name: 'Revoke Invitation' })
-        ).toBeVisible()
-      }
+      await expect(
+        page.getByRole('menuitem', { name: 'Resend Invitation' })
+      ).toBeVisible()
+      await expect(
+        page.getByRole('menuitem', { name: 'Revoke Invitation' })
+      ).toBeVisible()
     })
   })
 })

@@ -1,6 +1,11 @@
 import { forwardRef, ButtonHTMLAttributes, ReactNode } from 'react'
 
-type ButtonVariant = 'default' | 'secondary' | 'destructive' | 'ghost' | 'outline'
+type ButtonVariant =
+  | 'default'
+  | 'secondary'
+  | 'destructive'
+  | 'ghost'
+  | 'outline'
 type ButtonSize = 'default' | 'small' | 'large' | 'icon'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -10,51 +15,19 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
 }
 
-const variantStyles: Record<ButtonVariant, React.CSSProperties> = {
-  default: {
-    backgroundColor: '#18181b',
-    color: 'white',
-    border: '1px solid #18181b',
-  },
-  secondary: {
-    backgroundColor: '#f4f4f5',
-    color: '#18181b',
-    border: '1px solid #e4e4e7',
-  },
-  destructive: {
-    backgroundColor: '#ef4444',
-    color: 'white',
-    border: '1px solid #ef4444',
-  },
-  ghost: {
-    backgroundColor: 'transparent',
-    color: '#18181b',
-    border: '1px solid transparent',
-  },
-  outline: {
-    backgroundColor: 'transparent',
-    color: '#18181b',
-    border: '1px solid #e4e4e7',
-  },
+const variantClasses: Record<ButtonVariant, string> = {
+  default: 'bg-zinc-900 text-white border border-zinc-900',
+  secondary: 'bg-zinc-100 text-zinc-900 border border-zinc-200',
+  destructive: 'bg-red-500 text-white border border-red-500',
+  ghost: 'bg-transparent text-zinc-900 border border-transparent',
+  outline: 'bg-transparent text-zinc-900 border border-zinc-200',
 }
 
-const sizeStyles: Record<ButtonSize, React.CSSProperties> = {
-  default: {
-    padding: '8px 16px',
-    fontSize: '14px',
-  },
-  small: {
-    padding: '4px 8px',
-    fontSize: '12px',
-  },
-  large: {
-    padding: '12px 24px',
-    fontSize: '16px',
-  },
-  icon: {
-    padding: '8px',
-    fontSize: '14px',
-  },
+const sizeClasses: Record<ButtonSize, string> = {
+  default: 'px-4 py-2 text-sm',
+  small: 'px-2 py-1 text-xs',
+  large: 'px-6 py-3 text-base',
+  icon: 'p-2 text-sm',
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -65,46 +38,38 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       loading = false,
       disabled,
       children,
-      style,
+      className,
       ...props
     },
     ref
   ) => {
     const isDisabled = disabled || loading
+    const buttonClassName = [
+      'inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400',
+      variantClasses[variant],
+      sizeClasses[size],
+      isDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')
 
     return (
       <button
         ref={ref}
         disabled={isDisabled}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: '8px',
-          borderRadius: '6px',
-          fontWeight: 500,
-          cursor: isDisabled ? 'not-allowed' : 'pointer',
-          opacity: isDisabled ? 0.5 : 1,
-          transition: 'background-color 0.15s, opacity 0.15s',
-          ...variantStyles[variant],
-          ...sizeStyles[size],
-          ...style,
-        }}
+        className={buttonClassName}
         {...props}
       >
         {loading && (
           <svg
-            style={{
-              width: '16px',
-              height: '16px',
-              animation: 'spin 1s linear infinite',
-            }}
+            className="h-4 w-4 animate-spin"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
           >
             <circle
-              style={{ opacity: 0.25 }}
+              className="opacity-25"
               cx="12"
               cy="12"
               r="10"
@@ -112,7 +77,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               strokeWidth="4"
             />
             <path
-              style={{ opacity: 0.75 }}
+              className="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />

@@ -11,28 +11,20 @@ export const SelectValue = SelectPrimitive.Value
 export const SelectTrigger = forwardRef<
   HTMLButtonElement,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
->(({ children, style, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <SelectPrimitive.Trigger
     ref={ref}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      padding: '8px 12px',
-      fontSize: '14px',
-      backgroundColor: 'white',
-      border: '1px solid #e4e4e7',
-      borderRadius: '6px',
-      cursor: 'pointer',
-      outline: 'none',
-      minWidth: '150px',
-      ...style,
-    }}
+    className={[
+      'inline-flex min-w-[150px] items-center justify-between gap-2 rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-zinc-400 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon>
-      <ChevronDown size={16} style={{ color: '#6b7280' }} />
+      <ChevronDown size={16} className="text-zinc-500" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ))
@@ -41,27 +33,21 @@ SelectTrigger.displayName = 'SelectTrigger'
 export const SelectContent = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ children, style, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <SelectPrimitive.Portal>
     <SelectPrimitive.Content
       ref={ref}
       position="popper"
       sideOffset={4}
-      style={{
-        backgroundColor: 'white',
-        borderRadius: '6px',
-        padding: '4px',
-        boxShadow:
-          '0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2)',
-        zIndex: 50,
-        minWidth: 'var(--radix-select-trigger-width)',
-        maxHeight: 'var(--radix-select-content-available-height)',
-        overflow: 'hidden',
-        ...style,
-      }}
+      className={[
+        'z-50 min-w-[var(--radix-select-trigger-width)] max-h-[var(--radix-select-content-available-height)] overflow-hidden rounded-md border border-zinc-200 bg-white p-1 shadow-lg',
+        className,
+      ]
+        .filter(Boolean)
+        .join(' ')}
       {...props}
     >
-      <SelectPrimitive.Viewport style={{ padding: '4px' }}>
+      <SelectPrimitive.Viewport className="p-1">
         {children}
       </SelectPrimitive.Viewport>
     </SelectPrimitive.Content>
@@ -72,38 +58,19 @@ SelectContent.displayName = 'SelectContent'
 export const SelectItem = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
->(({ children, style, ...props }, ref) => (
+>(({ children, className, ...props }, ref) => (
   <SelectPrimitive.Item
     ref={ref}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      padding: '8px 12px',
-      paddingRight: '32px',
-      fontSize: '14px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      outline: 'none',
-      position: 'relative',
-      ...style,
-    }}
-    onMouseEnter={(e) => {
-      e.currentTarget.style.backgroundColor = '#f4f4f5'
-    }}
-    onMouseLeave={(e) => {
-      e.currentTarget.style.backgroundColor = 'transparent'
-    }}
+    className={[
+      'relative flex w-full cursor-pointer select-none items-center rounded-sm py-2 pl-3 pr-8 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[highlighted]:bg-zinc-100 data-[highlighted]:text-zinc-900',
+      className,
+    ]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   >
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    <SelectPrimitive.ItemIndicator
-      style={{
-        position: 'absolute',
-        right: '8px',
-        display: 'flex',
-        alignItems: 'center',
-      }}
-    >
+    <SelectPrimitive.ItemIndicator className="absolute right-2 flex h-4 w-4 items-center justify-center">
       <Check size={16} />
     </SelectPrimitive.ItemIndicator>
   </SelectPrimitive.Item>
@@ -113,16 +80,12 @@ SelectItem.displayName = 'SelectItem'
 export const SelectLabel = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Label>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <SelectPrimitive.Label
     ref={ref}
-    style={{
-      padding: '8px 12px',
-      fontSize: '12px',
-      fontWeight: 600,
-      color: '#6b7280',
-      ...style,
-    }}
+    className={['px-3 py-2 text-xs font-semibold text-zinc-500', className]
+      .filter(Boolean)
+      .join(' ')}
     {...props}
   />
 ))
@@ -131,15 +94,10 @@ SelectLabel.displayName = 'SelectLabel'
 export const SelectSeparator = forwardRef<
   HTMLDivElement,
   ComponentPropsWithoutRef<typeof SelectPrimitive.Separator>
->(({ style, ...props }, ref) => (
+>(({ className, ...props }, ref) => (
   <SelectPrimitive.Separator
     ref={ref}
-    style={{
-      height: '1px',
-      backgroundColor: '#e4e4e7',
-      margin: '4px 0',
-      ...style,
-    }}
+    className={['my-1 h-px bg-zinc-200', className].filter(Boolean).join(' ')}
     {...props}
   />
 ))

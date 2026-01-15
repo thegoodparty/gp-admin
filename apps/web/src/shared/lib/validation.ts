@@ -6,10 +6,9 @@ export const inviteEmailSchema = z
   .string()
   .min(1, { message: 'Email is required' })
   .email({ message: 'Invalid email format' })
-  .refine(
-    (email) => email.toLowerCase().endsWith(ALLOWED_EMAIL_DOMAIN),
-    { message: `Email must be a ${ALLOWED_EMAIL_DOMAIN} address` }
-  )
+  .refine((email) => email.toLowerCase().endsWith(ALLOWED_EMAIL_DOMAIN), {
+    message: `Email must be a ${ALLOWED_EMAIL_DOMAIN} address`,
+  })
 
 export interface ValidationResult {
   valid: boolean

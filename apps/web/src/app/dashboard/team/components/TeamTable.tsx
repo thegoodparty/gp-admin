@@ -172,39 +172,17 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
           .slice(0, 2)
 
         return (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '8px',
-            }}
-          >
-            <div
-              style={{
-                width: '32px',
-                height: '32px',
-                position: 'relative',
-                borderRadius: '50%',
-              }}
-            >
-              <Avatar size="xSmall">
-                {member.imageUrl ? (
-                  <Avatar.Image
-                    src={member.imageUrl}
-                    alt={member.name}
-                    style={{ objectFit: 'cover' }}
-                  />
-                ) : (
-                  <Avatar.Fallback>{initials || '?'}</Avatar.Fallback>
-                )}
-              </Avatar>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontWeight: 500 }}>{member.name}</span>
-              <span style={{ fontSize: '14px', color: '#6b7280' }}>
-                {member.email}
-              </span>
+          <div className="flex items-center gap-3 p-2">
+            <Avatar size="xSmall" className="shrink-0">
+              {member.imageUrl ? (
+                <Avatar.Image src={member.imageUrl} alt={member.name} />
+              ) : (
+                <Avatar.Fallback>{initials || '?'}</Avatar.Fallback>
+              )}
+            </Avatar>
+            <div className="flex flex-col">
+              <span className="font-medium">{member.name}</span>
+              <span className="text-sm text-zinc-500">{member.email}</span>
             </div>
           </div>
         )
@@ -227,15 +205,13 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
       ),
       cell: ({ row }) => {
         const status = row.original.status
+        const statusClasses =
+          status === 'active'
+            ? 'bg-green-500 text-white'
+            : 'bg-zinc-500 text-white'
         return (
           <div
-            style={{
-              padding: '4px 16px',
-              display: 'inline-block',
-              borderRadius: '8px',
-              color: 'white',
-              backgroundColor: status === 'active' ? '#22c55e' : '#6b7280',
-            }}
+            className={`inline-block rounded-md px-4 py-1 text-sm ${statusClasses}`}
           >
             {status === 'active' ? 'Active' : 'Pending'}
           </div>
@@ -269,21 +245,15 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                 <MoreHorizontalIcon size={16} />
               </IconButton>
             </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              style={{ padding: '4px', backgroundColor: 'white' }}
-            >
+            <DropdownMenuContent align="end">
               {isUser ? (
                 <>
-                  <DropdownMenuLabel style={{ padding: '4px' }}>
-                    Change Role
-                  </DropdownMenuLabel>
+                  <DropdownMenuLabel>Change Role</DropdownMenuLabel>
                   {ROLE_OPTIONS.map((option) => (
                     <DropdownMenuItem
                       key={option.value}
                       disabled={member.role === option.value}
                       onClick={() => handleChangeRole(member, option.value)}
-                      style={{ padding: '4px' }}
                     >
                       {option.label}
                       {member.role === option.value && ' (current)'}
@@ -293,7 +263,6 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                   <DropdownMenuItem
                     variant="destructive"
                     onClick={() => handleRemove(member)}
-                    style={{ padding: '4px' }}
                   >
                     Remove User
                   </DropdownMenuItem>
@@ -303,7 +272,6 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                   <DropdownMenuItem
                     onClick={() => handleResendInvite(member)}
                     disabled={resendingId === member.id}
-                    style={{ padding: '4px' }}
                   >
                     {resendingId === member.id
                       ? 'Resending...'
@@ -313,7 +281,6 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
                     variant="destructive"
                     onClick={() => handleRevokeInvite(member)}
                     disabled={resendingId === member.id}
-                    style={{ padding: '4px' }}
                   >
                     Revoke Invitation
                   </DropdownMenuItem>
@@ -327,46 +294,27 @@ export function TeamTable({ users, invitations, onRefresh }: TeamTableProps) {
   ]
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          padding: '4px',
-        }}
-      >
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-4 p-1">
         <Select value={statusFilter} onValueChange={setStatusFilter}>
-          <SelectTrigger style={{ width: '150px' }}>
+          <SelectTrigger className="w-[150px]">
             <SelectValue placeholder="Status" />
           </SelectTrigger>
-          <SelectContent style={{ padding: '4px' }}>
-            <SelectItem value="all" style={{ padding: '4px' }}>
-              All Status
-            </SelectItem>
-            <SelectItem value="active" style={{ padding: '4px' }}>
-              Active
-            </SelectItem>
-            <SelectItem value="pending" style={{ padding: '4px' }}>
-              Pending
-            </SelectItem>
+          <SelectContent>
+            <SelectItem value="all">All Status</SelectItem>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="pending">Pending</SelectItem>
           </SelectContent>
         </Select>
 
         <Select value={roleFilter} onValueChange={setRoleFilter}>
-          <SelectTrigger style={{ width: '150px' }}>
+          <SelectTrigger className="w-[150px]">
             <SelectValue placeholder="Role" />
           </SelectTrigger>
-          <SelectContent style={{ padding: '4px' }}>
-            <SelectItem value="all" style={{ padding: '4px' }}>
-              All Roles
-            </SelectItem>
+          <SelectContent>
+            <SelectItem value="all">All Roles</SelectItem>
             {ROLE_OPTIONS.map((option) => (
-              <SelectItem
-                key={option.value}
-                value={option.value}
-                style={{ padding: '4px' }}
-              >
+              <SelectItem key={option.value} value={option.value}>
                 {option.label}
               </SelectItem>
             ))}

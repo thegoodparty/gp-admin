@@ -43,15 +43,8 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
 
   if (isLoading) {
     return (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: '256px',
-        }}
-      >
-        <div style={{ color: '#6b7280' }}>Loading...</div>
+      <div className="flex h-64 items-center justify-center">
+        <div className="text-zinc-500">Loading...</div>
       </div>
     )
   }
@@ -61,38 +54,16 @@ export function TeamPage({ initialUsers, initialInvitations }: TeamPageProps) {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
         <div>
-          <h1
-            style={{
-              fontSize: '24px',
-              fontWeight: 'bold',
-              letterSpacing: '-0.025em',
-              margin: 0,
-            }}
-          >
-            Team Management
-          </h1>
-          <p style={{ color: '#6b7280', margin: '4px 0 0 0' }}>
+          <h1 className="text-2xl font-bold tracking-tight">Team Management</h1>
+          <p className="mt-1 text-zinc-500">
             Manage team members and send invitations
           </p>
         </div>
         <Button onClick={handleOpenInviteDialog}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              padding: '8px 16px 8px 8px',
-            }}
-          >
+          <div className="flex items-center gap-2 px-2 py-1">
             <PlusIcon size={16} />
             Invite User
           </div>

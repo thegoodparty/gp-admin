@@ -93,12 +93,9 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label
-              htmlFor="email"
-              style={{ fontSize: '14px', fontWeight: 500 }}
-            >
+        <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <label htmlFor="email" className="text-sm font-medium">
               Email Address
             </label>
             <input
@@ -110,27 +107,23 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
               onBlur={handleEmailBlur}
               disabled={isLoading}
               autoComplete="off"
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                fontSize: '14px',
-                border: `1px solid ${validationError ? '#ef4444' : '#e4e4e7'}`,
-                borderRadius: '6px',
-                outline: 'none',
-              }}
+              className={[
+                'w-full rounded-md border bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-zinc-400',
+                validationError ? 'border-red-500' : 'border-zinc-200',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             />
             {validationError && (
-              <p style={{ fontSize: '14px', color: '#ef4444', margin: 0 }}>
-                {validationError}
-              </p>
+              <p className="text-sm text-red-500">{validationError}</p>
             )}
-            <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>
+            <p className="text-xs text-zinc-400">
               Only {ALLOWED_EMAIL_DOMAIN} email addresses are allowed
             </p>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label htmlFor="role" style={{ fontSize: '14px', fontWeight: 500 }}>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="role" className="text-sm font-medium">
               Role
             </label>
             <select
@@ -138,15 +131,7 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
               value={role}
               onChange={(e) => setRole(e.target.value as Role)}
               disabled={isLoading}
-              style={{
-                width: '100%',
-                padding: '8px 12px',
-                fontSize: '14px',
-                border: '1px solid #e4e4e7',
-                borderRadius: '6px',
-                outline: 'none',
-                backgroundColor: 'white',
-              }}
+              className="w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-zinc-400"
             >
               {ROLE_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
@@ -158,16 +143,7 @@ export function InviteDialog({ open, onClose, onSuccess }: InviteDialogProps) {
         </div>
 
         {error && (
-          <div
-            style={{
-              marginTop: '16px',
-              padding: '12px',
-              fontSize: '14px',
-              color: '#ef4444',
-              backgroundColor: '#fef2f2',
-              borderRadius: '6px',
-            }}
-          >
+          <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-500">
             {error}
           </div>
         )}

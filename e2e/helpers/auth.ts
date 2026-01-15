@@ -7,6 +7,9 @@ interface UserCredentials {
   password: string
 }
 
+/**
+ * Returns credentials for the requested test user type.
+ */
 function getCredentials(userType: UserType): UserCredentials {
   switch (userType) {
     case 'admin': {
@@ -59,14 +62,23 @@ export const signIn = async (page: Page, userType: UserType = 'default') => {
   await page.waitForURL(/\/dashboard/)
 }
 
+/**
+ * Signs in using admin test credentials.
+ */
 export const signInAsAdmin = async (page: Page) => {
   await signIn(page, 'admin')
 }
 
+/**
+ * Signs in using sales test credentials.
+ */
 export const signInAsSales = async (page: Page) => {
   await signIn(page, 'sales')
 }
 
+/**
+ * Signs in using read-only test credentials.
+ */
 export const signInAsReadOnly = async (page: Page) => {
   await signIn(page, 'default')
 }

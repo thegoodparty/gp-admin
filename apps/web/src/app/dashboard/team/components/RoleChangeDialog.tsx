@@ -65,15 +65,7 @@ export function RoleChangeDialog({
         </DialogHeader>
 
         {error && (
-          <div
-            style={{
-              padding: '12px',
-              fontSize: '14px',
-              color: '#ef4444',
-              backgroundColor: '#fef2f2',
-              borderRadius: '6px',
-            }}
-          >
+          <div className="rounded-md bg-red-50 p-3 text-sm text-red-500">
             {error}
           </div>
         )}
