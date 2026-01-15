@@ -1,0 +1,297 @@
+import { test, expect } from '@playwright/test'
+import { signInAsAdmin, signInAsSales, signInAsReadOnly } from './helpers/auth'
+
+test.describe('Team Management', () => {
+  test.describe('Sidebar Navigation', () => {
+    test('Admin can see Team in sidebar', async ({ page }) => {
+      await signInAsAdmin(page)
+      await page.waitForSelector('aside')
+
+      const teamLink = page.getByRole('link', { name: 'Team' })
+      await expect(teamLink).toBeVisible()
+    })
+
+    test('Sales user cannot see Team in sidebar', async ({ page }) => {
+      await signInAsSales(page)
+      await page.waitForSelector('aside')
+
+      const teamLink = page.getByRole('link', { name: 'Team' })
+      await expect(teamLink).not.toBeVisible()
+    })
+
+    test('Read-only user cannot see Team in sidebar', async ({ page }) => {
+      await signInAsReadOnly(page)
+      await page.waitForSelector('aside')
+
+      const teamLink = page.getByRole('link', { name: 'Team' })
+      await expect(teamLink).not.toBeVisible()
+    })
+  })
+
+  test.describe('Team Page Access', () => {
+    test('Admin can access Team page', async ({ page }) => {
+      await signInAsAdmin(page)
+      await page.goto('/dashboard/team')
+
+      await expect(
+        page.getByRole('heading', { name: 'Team Management' })
+      ).toBeVisible()
+      await expect(
+        page.getByRole('button', { name: /Invite User/i })
+      ).toBeVisible()
+    })
+
+    test('Non-admin user is redirected when accessing Team page directly', async ({
+      page,
+    }) => {
+      await signInAsSales(page)
+      await page.goto('/dashboard/team')
+
+      await expect(page).toHaveURL(/\/dashboard/)
+      await expect(
+        page.getByRole('heading', { name: 'Team Management' })
+      ).not.toBeVisible()
+    })
+  })
+
+  test.describe('Invite Dialog', () => {
+    test.beforeEach(async ({ page }) => {
+      await signInAsAdmin(page)
+      await page.goto('/dashboard/team')
+    })
+
+    test('Admin can open invite dialog', async ({ page }) => {
+      await page.getByRole('button', { name: /Invite User/i }).click()
+
+      await expect(
+        page.getByRole('heading', { name: 'Invite Team Member' })
+      ).toBeVisible()
+      await expect(page.getByLabel('Email Address')).toBeVisible()
+      await expect(page.getByLabel('Role')).toBeVisible()
+      await expect(page.getByRole('button', { name: 'Cancel' })).toBeVisible()
+      await expect(
+        page.getByRole('button', { name: 'Send Invitation' })
+      ).toBeVisible()
+    })
+
+    test('Invalid email domain shows error', async ({ page }) => {
+      await page.getByRole('button', { name: /Invite User/i }).click()
+      await expect(
+        page.getByRole('heading', { name: 'Invite Team Member' })
+      ).toBeVisible()
+
+      const emailInput = page.getByLabel('Email Address')
+      await emailInput.fill('test@gmail.com')
+      await emailInput.blur()
+
+      await expect(
+        page.getByText(/Only @goodparty\.org email addresses are allowed/i)
+      ).toBeVisible()
+    })
+
+    test('Empty email shows error on submit', async ({ page }) => {
+      await page.getByRole('button', { name: /Invite User/i }).click()
+      await expect(
+        page.getByRole('heading', { name: 'Invite Team Member' })
+      ).toBeVisible()
+
+      await page.getByRole('button', { name: 'Send Invitation' }).click()
+
+      await expect(page.getByText(/Email is required/i)).toBeVisible()
+    })
+
+    test('Can close invite dialog with Cancel button', async ({ page }) => {
+      await page.getByRole('button', { name: /Invite User/i }).click()
+      await expect(
+        page.getByRole('heading', { name: 'Invite Team Member' })
+      ).toBeVisible()
+
+      await page.getByRole('button', { name: 'Cancel' }).click()
+
+      await expect(
+        page.getByRole('heading', { name: 'Invite Team Member' })
+      ).not.toBeVisible()
+    })
+
+    test('Valid invitation shows correct role options', async ({ page }) => {
+      await page.getByRole('button', { name: /Invite User/i }).click()
+      await expect(
+        page.getByRole('heading', { name: 'Invite Team Member' })
+      ).toBeVisible()
+
+      const roleSelect = page.getByLabel('Role')
+      await expect(roleSelect).toBeVisible()
+      await expect(
+        roleSelect.locator('option', { hasText: 'Admin' })
+      ).toBeAttached()
+      await expect(
+        roleSelect.locator('option', { hasText: 'Sales' })
+      ).toBeAttached()
+      await expect(
+        roleSelect.locator('option', { hasText: 'Read Only' })
+      ).toBeAttached()
+    })
+  })
+
+  test.describe('Team Table', () => {
+    test.beforeEach(async ({ page }) => {
+      await signInAsAdmin(page)
+      await page.goto('/dashboard/team')
+    })
+
+    test('Team table displays users', async ({ page }) => {
+      await expect(page.locator('table')).toBeVisible()
+      await expect(
+        page.getByRole('columnheader', { name: 'Name' })
+      ).toBeVisible()
+      await expect(
+        page.getByRole('columnheader', { name: 'Role' })
+      ).toBeVisible()
+      await expect(
+        page.getByRole('columnheader', { name: 'Status' })
+      ).toBeVisible()
+    })
+
+    test('Can filter by status', async ({ page }) => {
+      const statusFilter = page
+        .locator('button')
+        .filter({ hasText: /All Status|Active|Pending/ })
+        .first()
+      await expect(statusFilter).toBeVisible()
+      await statusFilter.click()
+
+      await expect(
+        page.getByRole('option', { name: 'All Status' })
+      ).toBeVisible()
+      await expect(page.getByRole('option', { name: 'Active' })).toBeVisible()
+      await expect(page.getByRole('option', { name: 'Pending' })).toBeVisible()
+    })
+
+    test('Can filter by role', async ({ page }) => {
+      const roleFilter = page
+        .locator('button')
+        .filter({ hasText: /All Roles|Admin|Sales|Read Only/ })
+        .first()
+      await expect(roleFilter).toBeVisible()
+      await roleFilter.click()
+
+      await expect(
+        page.getByRole('option', { name: 'All Roles' })
+      ).toBeVisible()
+      await expect(page.getByRole('option', { name: 'Admin' })).toBeVisible()
+      await expect(page.getByRole('option', { name: 'Sales' })).toBeVisible()
+      await expect(
+        page.getByRole('option', { name: 'Read Only' })
+      ).toBeVisible()
+    })
+  })
+
+  test.describe('User Actions', () => {
+    test.beforeEach(async ({ page }) => {
+      await signInAsAdmin(page)
+      await page.goto('/dashboard/team')
+    })
+
+    test('Role change confirmation dialog appears', async ({ page }) => {
+      await page.waitForSelector('table')
+
+      const actionsButton = page
+        .getByRole('button', { name: 'Open actions menu' })
+        .first()
+
+      if (await actionsButton.isVisible()) {
+        await actionsButton.click()
+        await expect(page.getByText('Change Role')).toBeVisible()
+
+        const salesOption = page
+          .getByRole('menuitem', { name: /Sales/i })
+          .first()
+        if (
+          (await salesOption.isVisible()) &&
+          (await salesOption.isEnabled())
+        ) {
+          await salesOption.click()
+
+          await expect(
+            page.getByRole('heading', { name: 'Change Role' })
+          ).toBeVisible()
+          await expect(
+            page.getByText(/Are you sure you want to change/i)
+          ).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: 'Cancel' })
+          ).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: 'Change Role' })
+          ).toBeVisible()
+        }
+      }
+    })
+
+    test('Remove user confirmation dialog appears', async ({ page }) => {
+      await page.waitForSelector('table')
+
+      const actionsButton = page
+        .getByRole('button', { name: 'Open actions menu' })
+        .first()
+
+      if (await actionsButton.isVisible()) {
+        await actionsButton.click()
+
+        const removeOption = page.getByRole('menuitem', { name: 'Remove User' })
+        if (await removeOption.isVisible()) {
+          await removeOption.click()
+
+          await expect(
+            page.getByRole('heading', { name: 'Remove User' })
+          ).toBeVisible()
+          await expect(
+            page.getByText(/Are you sure you want to remove/i)
+          ).toBeVisible()
+          await expect(
+            page.getByText(/This action cannot be undone/i)
+          ).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: 'Cancel' })
+          ).toBeVisible()
+          await expect(
+            page.getByRole('button', { name: 'Remove User' })
+          ).toBeVisible()
+        }
+      }
+    })
+  })
+
+  test.describe('Pending Invitation Actions', () => {
+    test('Pending invitation shows Resend and Revoke options', async ({
+      page,
+    }) => {
+      await signInAsAdmin(page)
+      await page.goto('/dashboard/team')
+      await page.waitForSelector('table')
+
+      const statusFilter = page
+        .locator('button')
+        .filter({ hasText: /All Status/ })
+        .first()
+      await statusFilter.click()
+      await page.getByRole('option', { name: 'Pending' }).click()
+      await page.waitForTimeout(500)
+
+      const actionsButton = page
+        .getByRole('button', { name: 'Open actions menu' })
+        .first()
+
+      if (await actionsButton.isVisible()) {
+        await actionsButton.click()
+
+        await expect(
+          page.getByRole('menuitem', { name: 'Resend Invitation' })
+        ).toBeVisible()
+        await expect(
+          page.getByRole('menuitem', { name: 'Revoke Invitation' })
+        ).toBeVisible()
+      }
+    })
+  })
+})

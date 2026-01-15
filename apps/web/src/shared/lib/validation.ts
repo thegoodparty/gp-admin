@@ -3,8 +3,9 @@ import { z } from 'zod'
 export const ALLOWED_EMAIL_DOMAIN = '@goodparty.org'
 
 export const inviteEmailSchema = z
-  .email({ message: 'Invalid email format' })
+  .string()
   .min(1, { message: 'Email is required' })
+  .email({ message: 'Invalid email format' })
   .refine(
     (email) => email.toLowerCase().endsWith(ALLOWED_EMAIL_DOMAIN),
     { message: `Email must be a ${ALLOWED_EMAIL_DOMAIN} address` }
