@@ -1,21 +1,17 @@
 'use client'
 
 import { useUser } from '@clerk/nextjs'
-import { Role } from '../lib/roles'
 
-export interface CurrentUser {
-  id: string
-  email: string
-  firstName: string | null
-  lastName: string | null
-  fullName: string
-  role: Role | undefined
-  imageUrl: string
-  isLoaded: boolean
-  isSignedIn: boolean
-}
-
-export function useCurrentUser(): CurrentUser {
+/**
+ * Hook to access the current user with typed publicMetadata.
+ *
+ * This hook wraps Clerk's useUser() and provides convenient access to
+ * commonly used properties. The publicMetadata fields (role, invitedBy, invitedAt)
+ * are typed via global augmentation in src/types/clerk.d.ts.
+ *
+ * For full access to the Clerk user object, use useUser() directly.
+ */
+export function useCurrentUser() {
   const { user, isLoaded, isSignedIn } = useUser()
 
   return {
@@ -24,7 +20,7 @@ export function useCurrentUser(): CurrentUser {
     firstName: user?.firstName ?? null,
     lastName: user?.lastName ?? null,
     fullName: user?.fullName ?? '',
-    role: user?.publicMetadata?.role as Role | undefined,
+    role: user?.publicMetadata?.role,
     imageUrl: user?.imageUrl ?? '',
     isLoaded,
     isSignedIn: isSignedIn ?? false,

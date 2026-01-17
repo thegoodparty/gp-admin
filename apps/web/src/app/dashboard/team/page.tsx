@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { auth, clerkClient } from '@clerk/nextjs/server'
 import { listUsers, listInvitations } from './actions'
 import { TeamPage } from './components/TeamPage'
-import { Role, ROLES } from '@/shared/lib/roles'
+import { ROLES } from '@/shared/lib/roles'
 
 export const metadata: Metadata = {
   title: 'Team Management | GP Admin',
@@ -19,9 +19,8 @@ export default async function Page() {
 
   const client = await clerkClient()
   const user = await client.users.getUser(userId)
-  const role = user.publicMetadata?.role as Role | undefined
 
-  if (role !== ROLES.ADMIN) {
+  if (user.publicMetadata?.role !== ROLES.ADMIN) {
     return redirect('/dashboard')
   }
 
@@ -30,10 +29,5 @@ export default async function Page() {
     listInvitations(),
   ])
 
-  const childProps = {
-    initialUsers: users,
-    initialInvitations: invitations,
-  }
-
-  return <TeamPage {...childProps} />
+  return <TeamPage initialUsers={users} initialInvitations={invitations} />
 }

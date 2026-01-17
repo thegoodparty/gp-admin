@@ -16,11 +16,17 @@
  *   2. You need webhooks (Clerk → your API)
  *   3. Complex business logic combining Clerk + your data
  *   4. Multiple clients need the same API (mobile app, etc.)
+ *
+ * Types:
+ * - Uses Clerk's built-in User and Invitation types from @clerk/backend
+ * - Custom publicMetadata fields (role, invitedBy, invitedAt) are typed via
+ *   global type augmentation in src/types/clerk.d.ts
  */
 
 import { auth, clerkClient } from '@clerk/nextjs/server'
 import { Role, ROLES } from '@/shared/lib/roles'
 import { validateInviteEmail } from '@/shared/lib/validation'
+import { TeamUser, TeamInvitation } from './types'
 
 async function requireAdmin() {
   const { userId } = await auth()
@@ -30,9 +36,8 @@ async function requireAdmin() {
 
   const client = await clerkClient()
   const user = await client.users.getUser(userId)
-  const role = user.publicMetadata?.role as Role | undefined
 
-  if (role !== ROLES.ADMIN) {
+  if (user.publicMetadata?.role !== ROLES.ADMIN) {
     throw new Error('Forbidden: Admin access required')
   }
 
@@ -70,11 +75,12 @@ export async function inviteUser(email: string, role: Role) {
   }
 }
 
-export async function listUsers() {
+export async function listUsers(): Promise<TeamUser[]> {
   const { client } = await requireAdmin()
 
   const usersResponse = await client.users.getUserList({ limit: 100 })
 
+  // Map Clerk User objects to plain objects for serialization
   return usersResponse.data.map((user) => ({
     id: user.id,
     email: user.primaryEmailAddress?.emailAddress ?? '',
@@ -90,13 +96,14 @@ export async function listUsers() {
   }))
 }
 
-export async function listInvitations() {
+export async function listInvitations(): Promise<TeamInvitation[]> {
   const { client } = await requireAdmin()
 
   const invitationsResponse = await client.invitations.getInvitationList({
     status: 'pending',
   })
 
+  // Map Clerk Invitation objects to plain objects for serialization
   return invitationsResponse.data.map((invitation) => ({
     id: invitation.id,
     emailAddress: invitation.emailAddress,

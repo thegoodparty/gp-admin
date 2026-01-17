@@ -1,5 +1,9 @@
 import { Role } from '@/shared/lib/roles'
 
+/**
+ * Serializable team user type for passing from Server to Client Components.
+ * Maps from Clerk's User class to a plain object.
+ */
 export interface TeamUser {
   id: string
   email: string
@@ -14,6 +18,10 @@ export interface TeamUser {
   createdAt: number
 }
 
+/**
+ * Serializable team invitation type for passing from Server to Client Components.
+ * Maps from Clerk's Invitation class to a plain object.
+ */
 export interface TeamInvitation {
   id: string
   emailAddress: string
