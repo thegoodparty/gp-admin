@@ -5,10 +5,6 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 's3.us-west-2.amazonaws.com',
-      },
-      {
-        protocol: 'https',
         hostname: 'assets.goodparty.org',
       },
     ],
