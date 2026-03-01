@@ -39,8 +39,15 @@ export function ConfirmDialog({
               {cancelLabel}
             </Button>
           </AlertDialog.Cancel>
-          <AlertDialog.Action>
-            <Button color={color} onClick={onConfirm} loading={loading}>
+          <AlertDialog.Action onClick={(e) => e.preventDefault()}>
+            <Button
+              color={color}
+              onClick={async () => {
+                await onConfirm()
+                onOpenChange(false)
+              }}
+              loading={loading}
+            >
               {confirmLabel}
             </Button>
           </AlertDialog.Action>
