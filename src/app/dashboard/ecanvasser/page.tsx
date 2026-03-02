@@ -1,5 +1,4 @@
-import { auth } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
+import { canAccess } from '@/lib/auth'
 import { PERMISSIONS } from '@/lib/permissions'
 import { EcanvasserPage } from './components/EcanvasserPage'
 import type { Metadata } from 'next'
@@ -10,11 +9,7 @@ export const metadata: Metadata = {
 }
 
 export default async function Page() {
-  const { has, orgId } = await auth()
-
-  if (!has?.({ permission: PERMISSIONS.MANAGE_ECANVASSER }) || !orgId) {
-    redirect('/dashboard/users')
-  }
+  await canAccess(PERMISSIONS.MANAGE_ECANVASSER)
 
   return <EcanvasserPage />
 }

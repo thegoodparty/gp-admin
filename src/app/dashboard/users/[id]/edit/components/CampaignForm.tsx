@@ -27,13 +27,11 @@ import {
   ElectionLevel,
 } from '@goodparty_org/sdk'
 import type { Campaign } from '@goodparty_org/sdk'
+import { FORM_MODE, INPUT_TYPE, type InputType } from '@/shared/constants/form'
 import {
-  FORM_MODE,
-  INPUT_TYPE,
   CAMPAIGN_FORM_SECTIONS,
   SELECT_NONE_VALUE,
   UNSAVED_CHANGES_MESSAGE,
-  type InputType,
 } from '../constants'
 
 type FieldPath = Path<CombinedCampaignFormData>

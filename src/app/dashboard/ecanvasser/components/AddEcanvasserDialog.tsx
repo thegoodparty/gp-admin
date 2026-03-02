@@ -11,8 +11,8 @@ import { useToast } from '@/components/Toast'
 import { createEcanvasser } from '../actions'
 
 const addEcanvasserSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  apiKey: z.string().min(1, 'API key is required'),
+  email: z.email('Invalid email address'),
+  apiKey: z.string().min(12, 'API key is required'),
 })
 
 type AddEcanvasserFormData = z.infer<typeof addEcanvasserSchema>
@@ -44,12 +44,12 @@ export function AddEcanvasserDialog({
 
   async function handleSubmit() {
     const data = getValues()
-    const result = addEcanvasserSchema.safeParse(data)
-    if (!result.success) return
+    const { success, data: validatedData } = addEcanvasserSchema.safeParse(data)
+    if (!success) return
 
     setIsSaving(true)
     try {
-      await createEcanvasser(result.data)
+      await createEcanvasser(validatedData)
       showToast('Integration added successfully')
       reset()
       onOpenChange(false)

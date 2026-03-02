@@ -16,10 +16,9 @@ import { useNavigationGuard } from 'next-navigation-guard'
 import { electedOfficeSchema, type ElectedOfficeFormData } from '../schema'
 import { InfoCard } from '../../components/InfoCard'
 import { FormActions } from './FormActions'
+import { FORM_MODE, INPUT_TYPE } from '@/shared/constants/form'
 import {
-  INPUT_TYPE,
   ELECTED_OFFICE_FORM_SECTIONS,
-  FORM_MODE,
   UNSAVED_CHANGES_MESSAGE,
 } from '../constants'
 import type { ElectedOffice } from '@goodparty_org/sdk'

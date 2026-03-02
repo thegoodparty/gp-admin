@@ -16,13 +16,11 @@ import { userSchema, type UserFormData, USER_ROLES } from '../schema'
 import { InfoCard } from '../../components/InfoCard'
 import { ErrorText } from '@/components/ErrorText'
 import { FormActions } from './FormActions'
-import { UNSAVED_CHANGES_MESSAGE } from '../constants'
+import { FORM_MODE, INPUT_TYPE, type InputType } from '@/shared/constants/form'
 import {
-  INPUT_TYPE,
   ROLE_DISPLAY_NAMES,
   USER_FORM_SECTIONS,
-  FORM_MODE,
-  type InputType,
+  UNSAVED_CHANGES_MESSAGE,
 } from '../constants'
 import type { User } from '@goodparty_org/sdk'
 

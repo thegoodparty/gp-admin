@@ -17,13 +17,11 @@ import { type P2VStatus, type PathToVictory } from '@goodparty_org/sdk'
 import { useNavigationGuard } from 'next-navigation-guard'
 import { InfoCard } from '../../components/InfoCard'
 import { FormActions } from './FormActions'
+import { FORM_MODE, INPUT_TYPE, type InputType } from '@/shared/constants/form'
 import {
-  INPUT_TYPE,
   P2V_FORM_SECTIONS,
-  FORM_MODE,
   SELECT_NONE_VALUE,
   UNSAVED_CHANGES_MESSAGE,
-  type InputType,
 } from '../constants'
 
 type FieldPath = Path<PathToVictoryFormData>

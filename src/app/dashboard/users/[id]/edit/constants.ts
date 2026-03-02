@@ -1,8 +1,5 @@
 import { UserRole } from '@goodparty_org/sdk'
 
-export { FORM_MODE, INPUT_TYPE } from '@/shared/constants/form'
-export type { FormMode, InputType } from '@/shared/constants/form'
-
 export const ROLE_DISPLAY_NAMES: Record<UserRole, string> = {
   [UserRole.admin]: 'Admin',
   [UserRole.sales]: 'Sales',
